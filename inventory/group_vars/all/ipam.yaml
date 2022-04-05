@@ -48,12 +48,14 @@ ipam:
       v6: "fd01:100::1"
     
   lily:
-    service_ipv4: "192.168.100.2"
-    service_ipv6: "192.168.100.1"
     network: frontend
+    service_ip:
+      v4: "192.168.100.2"
+      v6: "fd01:100::2"
 
   # This entry is a floating IP of the active web server managed by keepalived
   web:
-    service_ipv4: "192.168.100.5"
-    service_ipv6: "192.168.100.1"
     network: frontend
+    service_ip:
+      v4: "192.168.100.5"
+      v6: "fd01:100::5"
