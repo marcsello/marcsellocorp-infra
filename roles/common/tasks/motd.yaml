@@ -1,0 +1,7 @@
+- name: "Install motd"
+  template:
+    src: "motd/{{ common_motd_template }}.j2"
+    dest: "/etc/motd"
+    owner: root
+    group: root
+    mode: 0644

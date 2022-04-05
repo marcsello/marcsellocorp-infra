@@ -1,0 +1,30 @@
+- name: "Check configuration"
+  assert:
+    that:
+      - common_ca != "" or (not common_install_ca)
+      - ((role_path + '/templates/motd/' + common_motd_template + '.j2') | is_file) or (not common_install_motd)
+      - ipam.keys() | length > 0
+
+- name: "Install private CA"
+  import_tasks: private_ca.yaml
+  when: common_install_ca
+
+- name: "Install motd"
+  import_tasks: motd.yaml
+  when: common_install_motd
+
+- name: "Install tools"
+  import_tasks: tools.yaml
+  when: common_install_tools
+
+- name: "Configure hosts file"
+  import_tasks: hosts_file.yaml
+  # disabling this removes the modifications
+
+- name: "Configure ssh server"
+  import_tasks: sshd.yaml
+  when: common_configure_sshd
+
+# This should be added to the end of every role, since ansible can't scope handlers for a role
+- name: "Flush handlers at the end of the role"
+  meta: flush_handlers

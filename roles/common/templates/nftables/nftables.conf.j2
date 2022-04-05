@@ -1,0 +1,28 @@
+#!/sbin/nft -f
+# Based on https://wiki.gentoo.org/wiki/Nftables/Examples
+
+flush ruleset
+
+table inet filter {
+	chain input {
+		type filter hook input priority 0; policy drop;
+
+		ct state invalid drop
+		ct state {established, related} accept
+
+		iif lo accept
+		iif != lo ip daddr 127.0.0.1/8 drop
+		iif != lo ip6 daddr ::1/128 drop 
+
+		ip protocol icmp icmp type echo-request limit rate 2/second accept
+		
+        # TODO: Accept necessary IPv6
+        # TODO: synthesize rules defined by vars
+
+	}
+
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+	}
+
+}

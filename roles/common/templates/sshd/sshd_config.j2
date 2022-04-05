@@ -1,0 +1,34 @@
+Port 22
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+PermitRootLogin no
+
+PubkeyAuthentication yes
+HostbasedAuthentication no
+
+PasswordAuthentication no
+PermitEmptyPasswords no
+
+ChallengeResponseAuthentication no
+
+UsePAM yes
+
+AllowTcpForwarding yes
+X11Forwarding no
+
+# this is needed for some reason lol
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+
+# Show banner to disconnect when not authorized
+Banner /etc/issue.net
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+
+AllowUsers {{ ansible_user }}

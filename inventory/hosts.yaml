@@ -1,0 +1,15 @@
+
+frontend:
+  children:
+    web:
+
+web:
+  hosts:
+    rose:
+      ansible_host: "{{ ipam.rose.service_ip }}"
+    lily:
+      ansible_host: "{{ ipam.rose.service_ip }}"
+
+facility:
+  hosts:
+    trixie:

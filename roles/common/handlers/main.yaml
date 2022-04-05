@@ -1,0 +1,8 @@
+- name: "Update ca-certificates"
+  command:
+    cmd: "update-ca-certificates"
+
+- name: "Restart ssh server"
+  systemd:
+    name: sshd
+    state: restarted

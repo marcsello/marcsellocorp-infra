@@ -1,0 +1,14 @@
+- name: "Ensure ca certificates package is installed" # because it contains the updater script
+  apt:
+    name: ca-certificates
+    update_cache: true
+    state: present
+
+- name: "Copy CA cert"
+  copy:
+    content: "{{ common_ca }}"
+    dest: /usr/local/share/ca-certificates/local.crt
+    mode: 0644
+    owner: root
+    group: root
+  notify: Update ca-certificates

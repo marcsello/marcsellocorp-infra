@@ -1,0 +1,49 @@
+# The following vars can be used to disable some components
+common_install_ca: true
+common_install_motd: true
+common_install_tools: true
+common_configure_hosts_file: true
+common_setup_basic_firewall: true
+common_configure_sshd: true
+
+# This should be overridden
+ipam: {}
+
+common_ca: "" # this must be set in a var
+
+# The following two lists will be concatenated and installed using apt
+common_tools_default:
+  - tmux
+  - htop
+  - dnsutils
+  - molly-guard
+  - needrestart
+  - curl
+  - wget
+  - netcat-openbsd
+  - tree
+  - net-tools
+  - nano
+  - psmisc
+  - python3
+  - strace
+  - ifstat
+  - tcpdump
+  - xxd
+
+common_tools_extra: []
+
+
+# motd template to be installed
+common_motd_template: "basic"
+
+# The following two lists will be concatenated and used to construct the firewall
+# This role only allows to open some ports to be accessible by some networks,
+# If you need anything more complicated, disable this part, and use something better
+common_basic_firewall_rules_default:
+  - comment: "SSH from employee network"
+    service_port: 22
+    reachable_from:
+      - employee
+
+common_basic_firewall_rules_extra: []

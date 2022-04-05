@@ -1,0 +1,5 @@
+- name: APT install tools
+  apt:
+    name: "{{ common_tools_default + common_tools_extra }}"
+    state: present
+    update_cache: true
