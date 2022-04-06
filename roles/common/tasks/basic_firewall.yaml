@@ -1,1 +1,3 @@
-# TODO
+- name: "Compile firewall rule list"
+  set_fact:
+    _common_combined_firewall_rules: "{{ common_basic_firewall_rules_default + common_basic_firewall_rules_extra }}"

@@ -15,9 +15,16 @@ table inet filter {
 		iif != lo ip6 daddr ::1/128 drop 
 
 		ip protocol icmp icmp type echo-request limit rate 2/second accept
+		ip6 nexthdr icmpv6 icmpv6 type {destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, router-solicitation, router-advertisement, neighbour-solicitation, neighbour-advertisement} limit rate 2/second accept
+
+{% for rule in _common_combined_firewall_rules %}{% for ip_version in ['ip', 'ip6']  %}
+
+		{% if (rule.reachable_from is defined) and (rule.reachable_from|length > 0) -%}
+		{{ ip_version }} saddr { ${{ rule.reachable_from | join(', $') }} } {% endif -%}
+		{{ rule.service_type|default('tcp') }} dport {{ rule.service_port }} {% if rule.service_type|default('tcp') == 'tcp' %}ct state new {% endif %}accept
+		{%- if (rule.comment is defined) and (rule.comment != "") %} comment "{{ rule.comment }}"{% endif %}
 		
-        # TODO: Accept necessary IPv6
-        # TODO: synthesize rules defined by vars
+{% endfor %}{% endfor %}
 
 	}
 
