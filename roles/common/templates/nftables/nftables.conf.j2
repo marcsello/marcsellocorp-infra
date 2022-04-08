@@ -1,5 +1,16 @@
+{% macro rule_part(rule) -%}
+{{ rule.service_type|default('tcp') }} dport {% if rule.service_ports|length > 1 %}{ {{ rule.service_ports|join(', ') }} }{% else %}{{ rule.service_ports[0] }}{% endif %} {% if rule.service_type|default('tcp') == 'tcp' %}ct state new {% endif %}accept
+{%- if (rule.comment is defined) and (rule.comment != "") %} comment "{{ rule.comment }}"{%- endif %}
+{%- endmacro %}
 #!/sbin/nft -f
 # Based on https://wiki.gentoo.org/wiki/Nftables/Examples
+
+# define networks
+
+{% for network_name, network_info in ipam_networks.items() %}{% for ip_version in ['ip', 'ip6'] %}{% if network_info[ip_version] is defined %}
+define {{ network_name }}_{{ ip_version }} = {{ network_info[ip_version].subnet }}
+{% endif %}{% endfor %}{% endfor %}
+
 
 flush ruleset
 
@@ -15,16 +26,17 @@ table inet filter {
 		iif != lo ip6 daddr ::1/128 drop 
 
 		ip protocol icmp icmp type echo-request limit rate 2/second accept
-		ip6 nexthdr icmpv6 icmpv6 type {destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, router-solicitation, router-advertisement, neighbour-solicitation, neighbour-advertisement} limit rate 2/second accept
+		ip6 nexthdr icmpv6 icmpv6 type {destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } limit rate 2/second accept
 
-{% for rule in _common_combined_firewall_rules %}{% for ip_version in ['ip', 'ip6']  %}
+{% for rule in _common_combined_firewall_rules %}
 
-		{% if (rule.reachable_from is defined) and (rule.reachable_from|length > 0) -%}
-		{{ ip_version }} saddr { ${{ rule.reachable_from | join(', $') }} } {% endif -%}
-		{{ rule.service_type|default('tcp') }} dport {{ rule.service_port }} {% if rule.service_type|default('tcp') == 'tcp' %}ct state new {% endif %}accept
-		{%- if (rule.comment is defined) and (rule.comment != "") %} comment "{{ rule.comment }}"{% endif %}
+		{% if (rule.reachable_from is defined) and (rule.reachable_from|length > 0) -%}{% for ip_version in ['ip', 'ip6']  %}{% set networks_with_this_ip_type = ipam_networks|dict2items|selectattr('key','in',rule.reachable_from)|selectattr('value.' + ip_version,'defined') %}{% if networks_with_this_ip_type|length > 0 %}
+		{{ ip_version }} saddr { {% for network in networks_with_this_ip_type %} ${{network.key}}_{{ ip_version }}{%if not loop.last %},{%endif%} {% endfor %} } {{ rule_part(rule) }}
+		{% endif %}{% endfor %}{% else %}
+		{{ rule_part(rule) }}
+		{% endif %}
 		
-{% endfor %}{% endfor %}
+{% endfor %}
 
 	}
 

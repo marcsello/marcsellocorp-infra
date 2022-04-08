@@ -6,3 +6,8 @@
   systemd:
     name: sshd
     state: restarted
+
+- name: "Reload nftables"
+  systemd:
+    name: nftables
+    state: restarted

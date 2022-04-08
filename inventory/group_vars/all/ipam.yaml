@@ -4,58 +4,59 @@ ipam_networks:
   # VMs in the frontend networks hosts services that are exposed to the public internet
   frontend:
     domain: ".frontend.local"
-    ipv4:
+    ip:
       subnet: "192.168.100.0/24"
       gw: "192.168.100.254"
-    ipv6:
-      prefix: "fd01:100::/64"
+    ip6:
+      # in ipv6 this actually called prefix, but that would make stuff complicated
+      subnet: "fd01:100::/64"
       gw: "fe80::"
   
   # VMs in the backend network hosts services that are not normally exposed to the public, only "trough" a frontend service
   backend:
     domain: ".backend.local"
-    ipv4:
+    ip:
       subnet: "192.168.101.0/24"
       gw: "192.168.101.254"
-    ipv6:
-      prefix: "fd01:101::/64"
+    ip6:
+      subnet: "fd01:101::/64"
       gw: "fe80::"
 
   # VMs in the db network runs database services that are in use by services in the backend network.
   db:
     domain: ".db.local"
-    ipv4:
+    ip:
       subnet: "192.168.102.0/24"
       gw: "192.168.102.254"
-    ipv6:
-      prefix: "fd01:102::/64"
+    ip6:
+      subnet: "fd01:102::/64"
       gw: "fe80::"
 
   employee:
     domain: ".office"
-    ipv4:
+    ip:
       subnet: "192.168.200.0/24"
       gw: "192.168.200.254"
-    ipv6:
-      prefix: "fd01:200::/64"
+    ip6:
+      subnet: "fd01:200::/64"
       gw: "fe80::"
 
 ipam:
   rose:
     network: frontend
-    service_ip:
-      v4: "192.168.100.1"
-      v6: "fd01:100::1"
+    service_addr:
+      ip: "192.168.100.1"
+      ip6: "fd01:100::1"
     
   lily:
     network: frontend
-    service_ip:
-      v4: "192.168.100.2"
-      v6: "fd01:100::2"
+    service_addr:
+      ip: "192.168.100.2"
+      ip6: "fd01:100::2"
 
   # This entry is a floating IP of the active web server managed by keepalived
   web:
     network: frontend
-    service_ip:
-      v4: "192.168.100.5"
-      v6: "fd01:100::5"
+    service_addr:
+      ip: "192.168.100.5"
+      ip6: "fd01:100::5"

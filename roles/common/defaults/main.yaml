@@ -7,6 +7,7 @@ common_setup_basic_firewall: true
 common_configure_sshd: true
 
 # This should be overridden
+ipam_networks: {}
 ipam: {}
 
 common_ca: "" # this must be set in a var
@@ -37,12 +38,14 @@ common_tools_extra: []
 # motd template to be installed
 common_motd_template: "basic"
 
+common_sshd_port: 22
+
 # The following two lists will be concatenated and used to construct the firewall
 # This role only allows to open some ports to be accessible by some networks,
 # If you need anything more complicated, disable this part, and use something better
 common_basic_firewall_rules_default:
   - comment: "SSH from employee network"
-    service_port: 22
+    service_ports: ["{{ common_sshd_port }}"]
     reachable_from:
       - employee
 

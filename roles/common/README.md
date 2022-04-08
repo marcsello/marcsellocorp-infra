@@ -5,7 +5,7 @@ This includes but not limited to:
  - Installing a motd
  - Installing my favourite debugging tools
  - Configuring hosts file, and other network stuff
- - Setting up a basic firewall
  - Configure ssh server
+ - Setting up a basic firewall
 
 This role depends on the common ipam var
