@@ -6,9 +6,9 @@ frontend:
 web:
   hosts:
     rose:
-      ansible_host: "{{ ipam.rose.service_ip }}"
+      ansible_host: "{{ ipam.rose.service_addr.ip }}"
     lily:
-      ansible_host: "{{ ipam.rose.service_ip }}"
+      ansible_host: "{{ ipam.lily.service_addr.ip }}"
 
 facility:
   hosts:
