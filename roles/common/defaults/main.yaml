@@ -51,3 +51,6 @@ common_basic_firewall_rules_default:
       - employee
 
 common_basic_firewall_rules_extra: []
+
+common_basic_firewall_accept_vrrp_from_host: []
+# hostnames as declared in ipam

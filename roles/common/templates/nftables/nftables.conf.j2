@@ -1,5 +1,5 @@
 {% macro rule_part(rule) -%}
-{{ rule.service_type|default('tcp') }} dport {% if rule.service_ports|length > 1 %}{ {{ rule.service_ports|join(', ') }} }{% else %}{{ rule.service_ports[0] }}{% endif %} {% if rule.service_type|default('tcp') == 'tcp' %}ct state new {% endif %}accept
+{{ rule.service_type|default('tcp') }}{% if rule.service_type|default('tcp') in ['tcp', 'udp'] and rule.service_ports is defined %} dport {% if rule.service_ports|length > 1 %}{ {{ rule.service_ports|join(', ') }} }{% else %}{{ rule.service_ports[0] }}{% endif %}{%endif%} {% if rule.service_type|default('tcp') == 'tcp' %}ct state new {% endif %}accept
 {%- if (rule.comment is defined) and (rule.comment != "") %} comment "{{ rule.comment }}"{%- endif %}
 {%- endmacro %}
 #!/sbin/nft -f
@@ -30,13 +30,19 @@ table inet filter {
 
 {% for rule in _common_combined_firewall_rules %}
 
-		{% if (rule.reachable_from is defined) and (rule.reachable_from|length > 0) -%}{% for ip_version in ['ip', 'ip6']  %}{% set networks_with_this_ip_type = ipam_networks|dict2items|selectattr('key','in',rule.reachable_from)|selectattr('value.' + ip_version,'defined') %}{% if networks_with_this_ip_type|length > 0 %}
-		{{ ip_version }} saddr { {% for network in networks_with_this_ip_type %} ${{network.key}}_{{ ip_version }}{%if not loop.last %},{%endif%} {% endfor %} } {{ rule_part(rule) }}
-		{% endif %}{% endfor %}{% else %}
+{% if (rule.reachable_from is defined) and (rule.reachable_from|length > 0) -%}{% for ip_version in ['ip', 'ip6']  -%}
+{% set networks_with_this_ip_type = ipam_networks|dict2items|selectattr('key','in',rule.reachable_from)|selectattr('value.' + ip_version,'defined') %}{% if networks_with_this_ip_type|length > 0 %}
+		{{ ip_version }} saddr {% if networks_with_this_ip_type|length > 1 %}{ {% for network in networks_with_this_ip_type %} ${{network.key}}_{{ ip_version }}{%if not loop.last %},{%endif%} {% endfor %} }{% else %}${{networks_with_this_ip_type[0].key}}_{{ ip_version }}{% endif %} {{ rule_part(rule) }}
+{% endif %}{% endfor %}{% else %}
 		{{ rule_part(rule) }}
-		{% endif %}
+{% endif %}
 		
 {% endfor %}
+
+{% for ip_version in ['ip', 'ip6']  -%}
+{% set hosts_with_this_ip_type = ipam|dict2items|selectattr('key','in',common_basic_firewall_accept_vrrp_from_host)|selectattr('value.service_addr.' + ip_version,'defined') %}{% if hosts_with_this_ip_type|length > 0 %}
+		{% if ip_version == 'ip' %}ip protocol{%else%}ip6 nexthdr{% endif %} { vrrp, ah } {{ ip_version }} saddr {% if hosts_with_this_ip_type|length > 1 %}{ {% for host in hosts_with_this_ip_type %} {{ host.value.service_addr[ip_version] }}{%if not loop.last %},{%endif%} {% endfor %} }{% else %}{{ hosts_with_this_ip_type[0].value.service_addr[ip_version] }}{% endif %} accept
+{% endif %}{% endfor %}
 
 	}
 
