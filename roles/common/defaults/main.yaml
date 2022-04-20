@@ -31,6 +31,7 @@ common_tools_default:
   - ifstat
   - tcpdump
   - xxd
+  - moreutils
 
 common_tools_extra: []
 
