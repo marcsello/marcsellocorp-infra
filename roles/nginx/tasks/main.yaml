@@ -1,0 +1,11 @@
+- name: "Install nginx"
+  apt:
+    name: nginx
+    state: present
+    update_cache: true
+
+- name: "Setup configs"
+  import_tasks: config.yaml
+
+- name: "Setup static host dirs"
+  import_tasks: static.yaml

@@ -1,0 +1,5 @@
+upstream {{ item.name }} {
+    {% for backend in item.backends %}
+    server {{ backend.address }} {{ backend.options }};
+    {% endfor %}
+}

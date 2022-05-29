@@ -1,0 +1,29 @@
+nginx_static_root: "/var/www/"
+
+nginx_bind_localhost_only: true # it's planned to go trough haproxy
+nginx_port: 8080
+
+nginx_upstreams: []
+# - name:
+#   backends:
+#     - address: example.net
+#       options: ""
+
+nginx_vhosts: []
+# - server_name: [example.net]
+#   always_create_static_dir: false
+#   default_server: false
+#   custom: ""
+#   index: "index.html"
+#   error_pages: {}
+#   locations:
+#    - type: static, proxy, custom
+#      location: / # this can be regex, if you prefix it with ~
+#      access_log: true
+#      spa: false
+#      custom: ""
+#      index: ""
+#      proxy_pass: ""
+#      proxy_pass_forwarded_ip: true
+#      error_pages:
+#        "502": /errors/502.html

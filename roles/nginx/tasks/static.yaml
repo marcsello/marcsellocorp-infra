@@ -1,0 +1,17 @@
+- name: "Ensure common static root dir"
+  file:
+    path: "{{ nginx_static_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Ensure vhosts dirs"
+  file:
+    path: "{{ [nginx_static_root, item.server_name[0]]|path_join }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: item|need_static_dir
+  loop: "{{ nginx_vhosts }}"
