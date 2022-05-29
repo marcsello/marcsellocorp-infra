@@ -1,4 +1,4 @@
-- name: "Ensure ca certificates package is installed" # because it contains the updater script
+- name: "Ensure nftables package is installed"
   apt:
     name: nftables
     update_cache: true
