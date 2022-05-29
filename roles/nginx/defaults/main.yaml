@@ -1,7 +1,17 @@
 nginx_static_root: "/var/www/"
 
-nginx_bind_localhost_only: true # it's planned to go trough haproxy
-nginx_port: 8080
+nginx_bind_http_localhost_only: true # it's planned to go trough haproxy
+nginx_http_port: 8080
+
+# https listener is needed for clustered setup to protect the data betweeen the vms
+nginx_bind_https: false
+nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
+nginx_bind_https_localhost_only: false
+nginx_https_port: 8443
+nginx_https_cert:
+  ssl_certificate: ""
+  ssl_certificate_key: ""
+
 
 nginx_upstreams: []
 # - name:

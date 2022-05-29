@@ -1,6 +1,11 @@
 server {
-    listen {{ nginx_bind_localhost_only|ternary('127.0.0.1', '') }}:{{ nginx_port }}{% if item.default_server|default(false) %} default_server{% endif %};
-    listen {{ nginx_bind_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_port }}{% if item.default_server|default(false) %} default_server{% endif %};
+    listen {{ nginx_bind_http_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_http_port }}{% if item.default_server|default(false) %} default_server{% endif %};
+    listen {{ nginx_bind_http_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_http_port }}{% if item.default_server|default(false) %} default_server{% endif %};
+
+    {% if nginx_bind_https %}
+    listen {{ nginx_bind_https_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_https_port }} ssl{% if item.default_server|default(false) %} default_server{% endif %};
+    listen {{ nginx_bind_https_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_https_port }} ssl{% if item.default_server|default(false) %} default_server{% endif %};
+    {% endif %}
 
     root {{ [nginx_static_root, item.server_name[0]]|path_join }};
 

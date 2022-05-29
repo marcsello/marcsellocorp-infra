@@ -33,3 +33,18 @@
     mode: 0644
   loop: "{{ nginx_vhosts }}"
   notify: "Reload nginx"
+
+- name: "Install nginx ssl config"
+  template: 
+    src: "ssl.conf.j2"
+    dest: "{{ nginx_ssl_config_snippet_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: nginx_bind_https
+
+- name: "Remove unneded ssl config"
+  file: 
+    path: "{{ nginx_ssl_config_snippet_path }}"
+    state: absent
+  when: not nginx_bind_https

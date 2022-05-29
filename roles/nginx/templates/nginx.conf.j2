@@ -21,8 +21,12 @@ http {
 
 	error_log /var/log/nginx/main_error.log;
 
-    // http is proxied trough haproxy, so we don't need compression
+	// proxied trough haproxy, so we don't need compression
 	gzip off;
+
+	{% if nginx_bind_https %}
+	include {{ nginx_ssl_config_snippet_path }};
+	{% endif %}
 
 	include /etc/nginx/conf.d/*.conf;
 }
