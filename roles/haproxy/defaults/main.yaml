@@ -1,0 +1,6 @@
+haproxy_frontends: []
+# - name: ""
+#   config: | ...
+haproxy_backends: []
+# - name: ""
+#   config: | ...
