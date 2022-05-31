@@ -1,0 +1,70 @@
+global_defs {
+    vrrp_check_unicast_src
+}
+
+{% for script in keepalived_vrrp_scripts %}
+vrrp_script {{ script.name }} {
+    script "{{ script.script }}"
+    interval {{ script.interval|default(5) }}
+    weight {{ script.weight }}
+}
+{% endfor %}
+
+
+vrrp_instance {{ keepalived_vrrp_instance_name }}v4 {
+    state BACKUP
+    interface {{ ansible_default_ipv4.interface }}
+    virtual_router_id {{ keepalived_vrrp_router_id }}
+    priority {{ keepliaved_vrrp_priority }}
+    advert_int {{ keepliaved_vrrp_advert_int }}
+    
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_vrrp_auth_passwords[0] }}
+    }
+    unicast_peer {
+        {% for peer in keepalived_peers %}
+            ipam[peer].service_addr.ip
+        {% endfor %}
+    }
+    virtual_ipaddress {
+        {{ ipam[keepalived_floating_address].service_addr.ip }}
+    }
+    {% if keepalived_vrrp_scripts|length > 0 %}
+    track_script {
+        {% for script in keepalived_vrrp_scripts %}
+            {{ script.name }}
+        {% endfor %}
+    }
+    {% endif %}
+    vrrp_startup_delay 5
+}
+
+vrrp_instance {{ keepalived_vrrp_instance_name }}v6 {
+    state BACKUP
+    interface {{ ansible_default_ipv6.interface }}
+    virtual_router_id {{ keepalived_vrrp_router_id }}
+    priority {{ keepliaved_vrrp_priority }}
+    advert_int {{ keepliaved_vrrp_advert_int }}
+    native_ipv6
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_vrrp_auth_passwords[1] }}
+    }
+    unicast_peer {
+        {% for peer in keepalived_peers %}
+            ipam[peer].service_addr.ip6
+        {% endfor %}
+    }
+    virtual_ipaddress {
+        {{ ipam[keepalived_floating_address].service_addr.ip6 }} dev {{ ansible_default_ipv6.interface }} no_track
+    }
+    {% if keepalived_vrrp_scripts|length > 0 %}
+    track_script {
+        {% for script in keepalived_vrrp_scripts %}
+            {{ script.name }}
+        {% endfor %}
+    }
+    {% endif %}
+    vrrp_startup_delay 5
+}

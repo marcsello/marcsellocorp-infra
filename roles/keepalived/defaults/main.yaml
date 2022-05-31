@@ -1,0 +1,26 @@
+
+# This should be overridden
+ipam_networks: {}
+ipam: {}
+
+
+keepalived_vrrp_scripts: []
+# - name: ""
+#   interval: (defaults to 5)
+#   weight:
+#   script: 
+
+# This should be a hostname from the ipam dict
+keepalived_floating_address: ""
+
+# This should be a list of hostnames from the ipam dict
+keepalived_peers: []
+
+# A list of at least two passwords
+keepalived_vrrp_auth_passwords: []
+
+keepliaved_vrrp_advert_int: 1
+keepalived_vrrp_router_id: 10
+keepliaved_vrrp_priority: 100
+
+keepalived_vrrp_instance_name: ""
