@@ -1,3 +1,20 @@
+- name: "Check configuration"
+  assert:
+    that:
+      - ipam.keys()|length > 0
+      - ipam_networks.keys()|length > 0
+      - keepalived_floating_address in ipam.keys()
+      - keepalived_vrrp_auth_passwords|length >= 2
+      - keepalived_vrrp_instance_name|length > 0
+      - keepalived_peers|length >= 1
+
+
+- name: "Check peer configuration"
+  assert:
+    that:
+      - item in ipam.keys()
+    loop: keepalived_peers
+
 - name: "Install keepalived"
   apt:
     name: keepalived
