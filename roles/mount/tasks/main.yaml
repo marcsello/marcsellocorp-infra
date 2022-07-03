@@ -31,6 +31,7 @@
     fstype: "{{ item.filesystem }}"
     path: "{{ item.mountpoint }}"
     src: "{{ item.device }}"
+    opts: "{{ item.readonly|ternary('ro','rw') }}"
   loop: mounts
   loop_control:
     label: "{{item.mountpoint}}"

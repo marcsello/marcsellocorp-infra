@@ -5,3 +5,4 @@ mounts: []
 #   Only xfs, ext4 and virtiofs is supported
 #   filesystem:
 #   mountpoint: 
+#   readonly: false
