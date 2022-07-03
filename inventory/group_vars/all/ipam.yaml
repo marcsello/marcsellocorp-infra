@@ -32,6 +32,7 @@ ipam_networks:
       subnet: "fd01:102::/64"
       gw: "fe80::"
 
+  # VMs in the intra network provides services for internal use, or have some supporting role
   intra:
     domain: ".intra.local"
     ip:
@@ -51,13 +52,14 @@ ipam_networks:
       gw: "fe80::"
 
 ipam:
-  rose:
+  # Frontend (100)
+  aloe: # web-1
     network: frontend
     service_addr:
       ip: "192.168.100.1"
       ip6: "fd01:100::1"
     
-  lily:
+  lotus: # web-2
     network: frontend
     service_addr:
       ip: "192.168.100.2"
@@ -69,3 +71,48 @@ ipam:
     service_addr:
       ip: "192.168.100.5"
       ip6: "fd01:100::5"
+  
+  # Backend (101)
+  violet: # krimó
+    network: backend
+    service_addr:
+      ip: "192.168.101.1"
+      ip6: "fd01:101::1"
+
+  moondancer: # minecraft services
+    network: backend
+    service_addr:
+      ip: "192.168.101.2"
+      ip6: "fd01:101::2"
+
+  # Intra (103)
+  trixie: # DNS
+    network: intra
+    service_addr:
+      ip: "192.168.103.1"
+      ip6: "fd01:103::1"
+
+  twilightsparkle: # monitoring
+    network: intra
+    service_addr:
+      ip: "192.168.103.2"
+      ip6: "fd01:103::2"
+
+  stevenmagnet: # nextcloud
+    network: intra
+    service_addr:
+      ip: "192.168.103.3"
+      ip6: "fd01:103::3"
+
+  maud: # acme
+    network: intra
+    service_addr:
+      ip: "192.168.103.4"
+      ip6: "fd01:103::4"
+
+  # Employee (200)
+  bubble: # termial server
+    network: employee
+    service_addr:
+      ip: "192.168.200.1"
+      ip6: "fd01:200::1"

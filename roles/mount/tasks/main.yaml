@@ -1,15 +1,15 @@
 - name: "Check config"
   assert:
     that: 
-    - item.filesystem in ["ext4", "xfs", "virtiofs"]
-    - '"/dev/sd" not in item.device'
+      - item.filesystem in ["ext4", "xfs", "virtiofs"]
+      - '"/dev/sd" not in item.device'
   loop: mounts
 
 - name: "Make filesystems"
   filesystem:
-    dev: {{item.device}}
+    dev: "{{ item.device }}"
     force: false
-    fstype: {{ item.filesystem }}
+    fstype: "{{ item.filesystem }}"
     resizefs: true
   when: item.filesystem in ["ext4", "xfs"]
   loop: mounts

@@ -1,0 +1,13 @@
+- name: "common tasks"
+  hosts: all
+  roles:
+    - common
+    - mount
+
+- name: "webserver specific tasks"
+  hosts: web
+  roles:
+    - { role: nginx, tags: ['nginx'] }
+    - { role: haproxy, tags: ['haproxy'] }
+    - { role: keepalived, tags: ['keepalived'] }
+

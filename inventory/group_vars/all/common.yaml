@@ -1,0 +1,5 @@
+# just use locally deployed dns instead
+common_configure_hosts_file: false
+
+# not ready yet
+common_install_ca: false

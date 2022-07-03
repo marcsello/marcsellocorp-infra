@@ -1,0 +1,2 @@
+common_basic_firewall_accept_vrrp_from_host:
+  - lotus

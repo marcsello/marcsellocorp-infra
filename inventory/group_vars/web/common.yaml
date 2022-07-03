@@ -1,0 +1,8 @@
+common_basic_firewall_rules_extra:
+  - comment: "haproxy"
+    service_ports: [80,443]
+
+  - comment: "nginx"
+    service_ports: [8443]
+    reachable_from:
+      - frontend

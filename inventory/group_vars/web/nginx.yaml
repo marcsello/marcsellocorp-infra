@@ -1,0 +1,44 @@
+nginx_upstreams: []
+# - name:
+#   backends:
+#     - address: example.net
+#       options: ""
+
+nginx_vhosts: 
+ - server_name: ["luna.sch.bme.hu", "luna"]
+   cert_name: luna.sch.bme.hu
+   default_server: true
+   locations:
+    - type: static
+      location: "/"
+      access_log: true
+    - type: static
+      location: "/sch-only/"
+      access_log: true
+      custom: |
+        allow 52.66.176.0/21;
+        allow 52.66.192.0/24;
+        allow 52.66.208.0/22;
+        allow 10.51.0.0/16;
+        allow 2001:738:2001:2070::/60;
+        deny all;
+      error_pages:
+        "403": "angery.html"
+
+ - server_name: ["luna.marcsello.com"]
+   cert_name: marcsello.com
+   locations:
+    - type: static
+      location: "/"
+      access_log: true
+      spa: true
+#    - type: proxy
+#      location: "/ezotv/"
+#      access_log: true
+
+ - server_name: ["fakertibutor.sch.bme.hu", "fakertibutor"]
+   cert_name: fakertibutor.sch.bme.hu
+   locations:
+    - type: static
+      location: "/"
+      access_log: true

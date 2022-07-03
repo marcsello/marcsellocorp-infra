@@ -1,0 +1,5 @@
+mounts:
+ - device: "wwwdata"
+   filesystem: "virtiofs"
+   mountpoint: "/var/www"
+   readonly: true
