@@ -1,0 +1,36 @@
+- name: "Check config"
+  assert:
+    that: 
+    - item.filesystem in ["ext4", "xfs", "virtiofs"]
+    - '"/dev/sd" not in item.device'
+  loop: mounts
+
+- name: "Make filesystems"
+  filesystem:
+    dev: {{item.device}}
+    force: false
+    fstype: {{ item.filesystem }}
+    resizefs: true
+  when: item.filesystem in ["ext4", "xfs"]
+  loop: mounts
+  loop_control:
+    label: "{{item.mountpoint}}"
+
+- name: "Create mountpoints"
+  file:
+    state: directory
+    path: "{{item.mountpoint}}"
+  loop: mounts
+  loop_control:
+    label: "{{item.mountpoint}}"
+
+- name: "Mount stuff"
+  mount:
+    boot: true
+    state: mounted
+    fstype: "{{ item.filesystem }}"
+    path: "{{ item.mountpoint }}"
+    src: "{{ item.device }}"
+  loop: mounts
+  loop_control:
+    label: "{{item.mountpoint}}"
