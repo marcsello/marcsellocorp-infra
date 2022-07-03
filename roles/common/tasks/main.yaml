@@ -6,6 +6,10 @@
       - ipam.keys() | length > 0
       - ipam_networks.keys() | length > 0
 
+- name: "Clean Ubuntu"
+  import_tasks: clean_ubuntu.yaml
+  when: ansible_distribution == "Ubuntu"
+
 - name: "Install private CA"
   import_tasks: private_ca.yaml
   when: common_install_ca

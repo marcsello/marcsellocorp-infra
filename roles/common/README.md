@@ -1,6 +1,7 @@
 This is a common role that is applied to all servers. It contains everything that is common for all servers but too small to make their own role.
 
 This includes but not limited to:
+ - Clean out bloat from ubuntu vms
  - Installing the CA that is used to verify communication between VMs
  - Installing a motd
  - Installing my favourite debugging tools
