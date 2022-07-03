@@ -1,10 +1,15 @@
 server {
+    {% if nginx_bind_http %}
     listen {{ nginx_bind_http_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_http_port }}{% if item.default_server|default(false) %} default_server{% endif %};
     listen {{ nginx_bind_http_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_http_port }}{% if item.default_server|default(false) %} default_server{% endif %};
+    {% endif %}
 
     {% if nginx_bind_https %}
     listen {{ nginx_bind_https_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_https_port }} ssl{% if item.default_server|default(false) %} default_server{% endif %};
     listen {{ nginx_bind_https_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_https_port }} ssl{% if item.default_server|default(false) %} default_server{% endif %};
+
+    ssl_certificate		{{ [nginx_ssl_keys_dir, item.cert_name|default(item.server_name[0]) + '.key']|path_join }};
+    ssl_certificate_key {{ [nginx_ssl_certs_dir, item.cert_name|default(item.server_name[0]) + '.crt']|path_join }};
     {% endif %}
 
     root {{ [nginx_static_root, item.server_name[0]]|path_join }};
@@ -45,7 +50,7 @@ server {
         error_page {{ code }} {{ path }};
         {% endfor %}{% endif %}
 
-        {{ location.custom|default('') }}
+        {{ location.custom|default('')|indent( width=8, indentfirst=False) }}
     }
 
     {% endfor %}
@@ -54,6 +59,6 @@ server {
         error_page {{ code }} {{ path }};
     {% endfor %}{% endif %}
 
-    {{ item.custom|default('') }}
+    {{ item.custom|default('')|indent( width=4, indentfirst=False) }}
 
 }

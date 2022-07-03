@@ -1,17 +1,15 @@
 nginx_static_root: "/var/www/"
 
+nginx_bind_http: false
 nginx_bind_http_localhost_only: true # it's planned to go trough haproxy
 nginx_http_port: 8080
 
-# https listener is needed for clustered setup to protect the data betweeen the vms
-nginx_bind_https: false
-nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
+nginx_bind_https: true
 nginx_bind_https_localhost_only: false
 nginx_https_port: 8443
-nginx_https_cert:
-  ssl_certificate: ""
-  ssl_certificate_key: ""
-
+nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
+nginx_ssl_certs_dir: "/etc/ssl"
+nginx_ssl_keys_dir: "/etc/ssl"
 
 nginx_upstreams: []
 # - name:
@@ -21,6 +19,7 @@ nginx_upstreams: []
 
 nginx_vhosts: []
 # - server_name: [example.net]
+#   cert_name: example.net
 #   always_create_static_dir: false
 #   default_server: false
 #   custom: ""
