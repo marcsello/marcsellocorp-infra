@@ -3,6 +3,6 @@ domain {{ ipam_networks[common_resolvconf_search_domain]['domain'] }}
 search {{ ipam_networks[common_resolvconf_search_domain]['domain'] }}
 {% endif %}
 {% for resolver in common_resolvconf_resolvers %}
-{% if ipam[resolver]['service_addr']['ip']|defined %}nameserver {{ ipam[resolver]['service_addr']['ip'] }}{% endif %}
-{% if ipam[resolver]['service_addr']['ip6']|defined %}nameserver {{ ipam[resolver]['service_addr']['ip6'] }}{% endif %}
+{% if ipam[resolver]['service_addr']['ip'] is defined %}nameserver {{ ipam[resolver]['service_addr']['ip'] }}{% endif %}
+{% if ipam[resolver]['service_addr']['ip6'] is defined %}nameserver {{ ipam[resolver]['service_addr']['ip6'] }}{% endif %}
 {% endfor %}
