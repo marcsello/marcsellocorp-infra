@@ -1,13 +1,13 @@
 haproxy_frontends: 
   - name: "service_https"
     config: | 
-      bind :443
+      bind :::443 v4v6
       mode tcp
       default_backend nginx
 
   - name: "service_http"
     config: |
-      bind :80
+      bind :::80 v4v6
       mode http
       http-request redirect scheme https unless { path -i -m beg /.well-known/acme-challenge }
       default_backend acme
