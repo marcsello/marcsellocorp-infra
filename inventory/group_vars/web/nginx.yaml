@@ -38,7 +38,7 @@ nginx_vhosts:
 #      access_log: true
 
  - server_name: ["fakertibutor.sch.bme.hu", "fakertibutor"]
-   cert_name: fakertibutor.sch.bme.hu
+   cert_name: luna.sch.bme.hu
    locations:
     - type: static
       location: "/"
