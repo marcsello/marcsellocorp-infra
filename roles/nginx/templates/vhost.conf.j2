@@ -50,7 +50,7 @@ server {
         error_page {{ code }} {{ path }};
         {% endfor %}{% endif %}
 
-        {{ location.custom|default('')|indent( width=8, indentfirst=False) }}
+        {{ location.custom|default('')|indent( width=8, first=False) }}
     }
 
     {% endfor %}
@@ -59,6 +59,6 @@ server {
         error_page {{ code }} {{ path }};
     {% endfor %}{% endif %}
 
-    {{ item.custom|default('')|indent( width=4, indentfirst=False) }}
+    {{ item.custom|default('')|indent( width=4, first=False) }}
 
 }
