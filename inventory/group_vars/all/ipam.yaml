@@ -85,6 +85,24 @@ ipam:
       ip: "192.168.101.2"
       ip6: "fd01:101::2"
 
+  spitfire: # k8s master
+    network: backend
+    service_addr:
+      ip: "192.168.101.100"
+      ip6: "fd01:101::100"
+
+  fleetfoot: # k8s worker 1
+    network: backend
+    service_addr:
+      ip: "192.168.101.101"
+      ip6: "fd01:101::101"
+
+  soarin: # k8s worker 2
+    network: backend
+    service_addr:
+      ip: "192.168.101.102"
+      ip6: "fd01:101::102"
+
   # Intra (103)
   trixie: # DNS
     network: intra
