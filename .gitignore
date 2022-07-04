@@ -2,3 +2,7 @@ venv/
 *.swp
 .ansible-retry
 .vaultpw
+
+# plugins might create these
+__pycache__
+*.pyc
