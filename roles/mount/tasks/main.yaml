@@ -3,7 +3,7 @@
     that: 
       - item.filesystem in ["ext4", "xfs", "virtiofs"]
       - '"/dev/sd" not in item.device'
-  loop: mounts
+  loop: "{{ mounts }}"
 
 - name: "Make filesystems"
   filesystem:
@@ -12,7 +12,7 @@
     fstype: "{{ item.filesystem }}"
     resizefs: true
   when: item.filesystem in ["ext4", "xfs"]
-  loop: mounts
+  loop: "{{ mounts }}"
   loop_control:
     label: "{{item.mountpoint}}"
 
@@ -20,7 +20,7 @@
   file:
     state: directory
     path: "{{item.mountpoint}}"
-  loop: mounts
+  loop: "{{ mounts }}"
   loop_control:
     label: "{{item.mountpoint}}"
 
@@ -32,6 +32,6 @@
     path: "{{ item.mountpoint }}"
     src: "{{ item.device }}"
     opts: "{{ item.readonly|ternary('ro','rw') }}"
-  loop: mounts
+  loop: "{{ mounts }}"
   loop_control:
     label: "{{item.mountpoint}}"
