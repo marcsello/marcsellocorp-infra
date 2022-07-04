@@ -2,8 +2,8 @@ haproxy_frontends:
   - name: "service_https"
     config: | 
       bind :443
-      mode: tcp
-      default_backend: nginx
+      mode tcp
+      default_backend nginx
 
   - name: "service_http"
     config: |
