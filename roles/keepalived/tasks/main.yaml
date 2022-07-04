@@ -13,7 +13,7 @@
   assert:
     that:
       - item in ipam.keys()
-    loop: keepalived_peers
+  loop: "{{ keepalived_peers }}"
 
 - name: "Install keepalived"
   apt:
