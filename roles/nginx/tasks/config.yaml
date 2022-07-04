@@ -1,6 +1,7 @@
 - name: "Remove unneded config dirs"
   file:
-    status: absent
+    state: absent
+    path: "{{ item }}"
   loop:
     - "/etc/nginx/sites-enabled"
     - "/etc/nginx/sites-available"
