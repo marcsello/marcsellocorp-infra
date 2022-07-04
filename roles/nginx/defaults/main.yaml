@@ -9,8 +9,8 @@ nginx_bind_https: true
 nginx_bind_https_localhost_only: false
 nginx_https_port: 8443
 nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
-nginx_ssl_certs_dir: "/etc/ssl"
-nginx_ssl_keys_dir: "/etc/ssl"
+nginx_ssl_certs_dir: "/etc/certs"
+nginx_ssl_keys_dir: "/etc/certs"
 
 nginx_upstreams: []
 # - name:
