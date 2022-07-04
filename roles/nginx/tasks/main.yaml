@@ -9,3 +9,7 @@
 
 - name: "Setup static host dirs"
   import_tasks: static.yaml
+
+# This should be added to the end of every role, since ansible can't scope handlers for a role
+- name: "Flush handlers at the end of the role"
+  meta: flush_handlers
