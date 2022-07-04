@@ -6,6 +6,4 @@ frontend:
 web:
   hosts:
     aloe:
-      ansible_host: "{{ ipam.aloe.service_addr.ip }}"
     lotus:
-      ansible_host: "{{ ipam.lotus.service_addr.ip }}"
