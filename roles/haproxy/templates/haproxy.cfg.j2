@@ -24,12 +24,12 @@ defaults
 
 {% for frontend in haproxy_frontends %}
 frontend {{ frontend.name }}
-{{ frontend.config|indent( width=4, indentfirst=True) }}
+{{ frontend.config|indent( width=4, first=True) }}
 
 {% endfor %}
 
 {% for backend in haproxy_backends %}
 backend {{ backend.name }}
-{{ backend.config|indent( width=4, indentfirst=True) }}
+{{ backend.config|indent( width=4, first=True) }}
 
 {% endfor %}
