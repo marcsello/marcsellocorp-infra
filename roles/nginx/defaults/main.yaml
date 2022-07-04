@@ -1,4 +1,5 @@
 nginx_static_root: "/var/www/"
+nginx_manage_static_root_dirs: true
 
 nginx_bind_http: false
 nginx_bind_http_localhost_only: true # it's planned to go trough haproxy

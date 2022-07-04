@@ -1,3 +1,4 @@
+nginx_manage_static_root_dirs: false
 nginx_upstreams: []
 # - name:
 #   backends:
