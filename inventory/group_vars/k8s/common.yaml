@@ -1,0 +1,2 @@
+# k8s does all sorts of weird network memes, so we try not to interfere with it.
+common_setup_basic_firewall: false

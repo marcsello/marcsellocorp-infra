@@ -1,4 +1,8 @@
 
+backend:
+  children:
+    k8s:
+
 frontend:
   children:
     web:
@@ -7,3 +11,9 @@ web:
   hosts:
     aloe:
     lotus:
+
+k8s:
+  hosts:
+    spitfire:
+    fleetfoot:
+    soarin:
