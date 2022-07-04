@@ -2,6 +2,7 @@
 common_install_ca: true
 common_install_motd: true
 common_install_tools: true
+common_configure_static_resolvconf: true
 common_configure_hosts_file: true
 common_setup_basic_firewall: true
 common_configure_sshd: true
@@ -35,6 +36,8 @@ common_tools_default:
 
 common_tools_extra: []
 
+common_resolvconf_resolvers: [] # list of hostnames from the ipam dict
+common_resolvconf_search_domain: "" # name of the network in ipam networks dict
 
 # motd template to be installed
 common_motd_template: "basic"

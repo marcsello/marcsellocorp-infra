@@ -1,0 +1,7 @@
+- name: "Install static resolvconf"
+  template:
+    src: "resolvconf/resolv.conf.j2"
+    dest: "/etc/resolv.conf"
+    mode: 0644
+    owner: root
+    group: root

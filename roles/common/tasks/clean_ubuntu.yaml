@@ -14,6 +14,25 @@
     - 50-motd-news
     - 91-release-upgrade
 
+- name: Remove snapd from Ubuntu
+  apt:
+    name: snapd
+    state: absent
+    purge: true
+    autoremove: true
+
+- name: Remove snapd-related directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /snap
+    - /var/snap
+    - /var/lib/snapd
+    - "/home/{{ ansible_user }}/snap"
+
+# save this for last, because it might leave the system without a working dns resolver
+
 - name: "disable systemd-resolved"
   systemd:
     name: systemd-resolved
@@ -31,25 +50,3 @@
     path: /etc/resolv.conf
     state: absent
   when: link.stat.islnk is defined and link.stat.islnk
-
-- name: "install resolvconf"
-  apt:
-    name: resolvconf
-    state: present
-
-- name: Remove snapd from Ubuntu
-  apt:
-    name: snapd
-    state: absent
-    purge: true
-    autoremove: true
-
-- name: Remove snapd-related directories
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - /snap
-    - /var/snap
-    - /var/lib/snapd
-    - "/home/{{ ansible_user }}/snap"

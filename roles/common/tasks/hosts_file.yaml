@@ -2,7 +2,7 @@
   blockinfile:
     path: /etc/hosts
     block: |
-      {% for host, info in ipam %}
+      {% for host, info in ipam.items() %}
       {{ info.service_ip.v4 }} {{ host }} {{ host }}{{ ipam_networks[info.network].domain }}
       {{ info.service_ip.v6 }} {{ host }} {{ host }}{{ ipam_networks[info.network].domain }}
       {% endfor %}
