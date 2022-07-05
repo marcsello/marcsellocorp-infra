@@ -9,6 +9,7 @@ nginx_http_proxy_protocol: false
 nginx_bind_https: true
 nginx_bind_https_localhost_only: false
 nginx_https_port: 8443
+nginx_https_http2: true
 nginx_https_proxy_protocol: false
 nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
 nginx_ssl_certs_dir: "/etc/certs"

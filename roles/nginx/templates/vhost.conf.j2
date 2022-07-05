@@ -5,8 +5,8 @@ server {
     {% endif %}
 
     {% if nginx_bind_https %}
-    listen {{ nginx_bind_https_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_https_port }} ssl{% if nginx_https_proxy_protocol|default(false) %} proxy_protocol{% endif %}{% if item.default_server|default(false) %} default_server{% endif %};
-    listen {{ nginx_bind_https_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_https_port }} ssl{% if nginx_https_proxy_protocol|default(false) %} proxy_protocol{% endif %}{% if item.default_server|default(false) %} default_server{% endif %};
+    listen {{ nginx_bind_https_localhost_only|ternary('127.0.0.1', '0.0.0.0') }}:{{ nginx_https_port }} ssl{% if nginx_https_http2|default(true) %} http2{% endif %}{% if nginx_https_proxy_protocol|default(false) %} proxy_protocol{% endif %}{% if item.default_server|default(false) %} default_server{% endif %};
+    listen {{ nginx_bind_https_localhost_only|ternary('[::1]', '[::]') }}:{{ nginx_https_port }} ssl{% if nginx_https_http2|default(true) %} http2{% endif %}{% if nginx_https_proxy_protocol|default(false) %} proxy_protocol{% endif %}{% if item.default_server|default(false) %} default_server{% endif %};
 
     ssl_certificate		{{ [nginx_ssl_keys_dir, item.cert_name|default(item.server_name[0]) + '.crt']|path_join }};
     ssl_certificate_key {{ [nginx_ssl_certs_dir, item.cert_name|default(item.server_name[0]) + '.key']|path_join }};
