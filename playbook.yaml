@@ -10,4 +10,3 @@
     - { role: nginx, tags: ['nginx'] }
     - { role: haproxy, tags: ['haproxy'] }
     - { role: keepalived, tags: ['keepalived'] }
-

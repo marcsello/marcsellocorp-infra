@@ -52,7 +52,7 @@
     enabled: true
 
 - name: "Install keepalived config"
-  template: 
+  template:
     src: "keepalived.conf.j2"
     dest: "/etc/keepalived/keepalived.conf"
     owner: root

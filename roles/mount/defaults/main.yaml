@@ -1,8 +1,8 @@
 mounts: []
-# Device should use something unique, not /dev/something... 
+# Device should use something unique, not /dev/something...
 # The easiest is to check which bus libvirt assings to it, and use that
-# - device: 
+# - device:
 #   Only xfs, ext4 and virtiofs is supported
 #   filesystem:
-#   mountpoint: 
+#   mountpoint:
 #   readonly: false

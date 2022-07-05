@@ -1,6 +1,6 @@
 - name: "Check config"
   assert:
-    that: 
+    that:
       - item.filesystem in ["ext4", "xfs", "virtiofs"]
       - '"/dev/sd" not in item.device'
   loop: "{{ mounts }}"
@@ -14,15 +14,15 @@
   when: item.filesystem in ["ext4", "xfs"]
   loop: "{{ mounts }}"
   loop_control:
-    label: "{{item.mountpoint}}"
+    label: "{{ item.mountpoint }}"
 
 - name: "Create mountpoints"
   file:
     state: directory
-    path: "{{item.mountpoint}}"
+    path: "{{ item.mountpoint }}"
   loop: "{{ mounts }}"
   loop_control:
-    label: "{{item.mountpoint}}"
+    label: "{{ item.mountpoint }}"
 
 - name: "Mount stuff"
   mount:
@@ -34,4 +34,4 @@
     opts: "{{ item.readonly|ternary('ro','rw') }}"
   loop: "{{ mounts }}"
   loop_control:
-    label: "{{item.mountpoint}}"
+    label: "{{ item.mountpoint }}"

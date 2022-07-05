@@ -41,7 +41,7 @@
   notify: "Reload nginx"
 
 - name: "Install nginx ssl config"
-  template: 
+  template:
     src: "ssl.conf.j2"
     dest: "{{ nginx_ssl_config_snippet_path }}"
     owner: root
@@ -51,7 +51,7 @@
   notify: "Reload nginx"
 
 - name: "Remove unneded ssl config"
-  file: 
+  file:
     path: "{{ nginx_ssl_config_snippet_path }}"
     state: absent
   when: not nginx_bind_https
