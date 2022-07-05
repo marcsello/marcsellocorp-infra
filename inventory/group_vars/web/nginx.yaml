@@ -1,4 +1,5 @@
 nginx_manage_static_root_dirs: false
+nginx_https_proxy_protocol: true
 nginx_upstreams: []
 # - name:
 #   backends:

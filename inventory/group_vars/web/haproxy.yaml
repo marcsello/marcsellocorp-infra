@@ -18,8 +18,8 @@ haproxy_backends:
    config: |
     mode tcp
     option tcp-check
-    server local 127.0.0.1:8443 check
-    server other {{ ipam[haproxy_custom_pair]['service_addr']['ip'] }}:8443 check
+    server local 127.0.0.1:8443 check send-proxy-v2
+    server other {{ ipam[haproxy_custom_pair]['service_addr']['ip'] }}:8443 check send-proxy-v2
 
  - name: "acme"
    config: |

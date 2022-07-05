@@ -4,10 +4,12 @@ nginx_manage_static_root_dirs: true
 nginx_bind_http: false
 nginx_bind_http_localhost_only: true # it's planned to go trough haproxy
 nginx_http_port: 8080
+nginx_http_proxy_protocol: false
 
 nginx_bind_https: true
 nginx_bind_https_localhost_only: false
 nginx_https_port: 8443
+nginx_https_proxy_protocol: false
 nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
 nginx_ssl_certs_dir: "/etc/certs"
 nginx_ssl_keys_dir: "/etc/certs"
