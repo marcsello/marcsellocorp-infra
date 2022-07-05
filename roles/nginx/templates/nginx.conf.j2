@@ -8,6 +8,22 @@ events {
 }
 
 http {
+	{% if nginx_http_proxy_protocol or nginx_https_proxy_protocol %}
+	# I'm not sure what this does when it does not recieve a request over proxy protocol
+	real_ip_header proxy_protocol;
+
+	set_real_ip_from 127.0.0.0/8;
+	set_real_ip_from ::1/128;
+	{% for allowed in nginx_proxy_protocol_accept_overrides %}
+	{% if ipam[allowed]['service_addr']['ip'] is defined %}
+	set_real_ip_from {{ ipam[allowed]['service_addr']['ip'] }};
+	{% endif %}
+	{% if ipam[allowed]['service_addr']['ip6'] is defined %}
+	set_real_ip_from {{ ipam[allowed]['service_addr']['ip6'] }};
+	{% endif %}
+	{% endfor %}
+
+	{% endif %}
 
 	sendfile on;
 	tcp_nopush on;

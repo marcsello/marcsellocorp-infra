@@ -1,3 +1,7 @@
+# This should be overridden
+ipam_networks: {}
+ipam: {}
+
 nginx_static_root: "/var/www/"
 nginx_manage_static_root_dirs: true
 
@@ -14,6 +18,9 @@ nginx_https_proxy_protocol: false
 nginx_ssl_config_snippet_path: "/etc/nginx/snippets/ssl.conf"
 nginx_ssl_certs_dir: "/etc/certs"
 nginx_ssl_keys_dir: "/etc/certs"
+
+nginx_proxy_protocol_accept_overrides: [] # hostnames from ipam
+
 
 nginx_upstreams: []
 # - name:
