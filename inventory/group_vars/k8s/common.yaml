@@ -1,2 +1,5 @@
 # k8s does all sorts of weird network memes, so we try not to interfere with it.
 common_setup_basic_firewall: false
+
+# Kubespray likes to manage this for us...
+common_configure_static_resolvconf: false
