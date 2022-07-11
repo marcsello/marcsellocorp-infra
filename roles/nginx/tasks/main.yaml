@@ -1,3 +1,9 @@
+- name: "Check configuration"
+  assert:
+    that:
+      - ipam.keys()|length > 0
+      - ipam_networks.keys()|length > 0
+
 - name: "Install nginx"
   apt:
     name: nginx
