@@ -1,4 +1,4 @@
-from ipaddress import ip_network
+from ipaddress import ip_network, ip_address
 import math
 
 class FilterModule(object):
@@ -28,11 +28,12 @@ class FilterModule(object):
         return '.'.join(network.network_address.reverse_pointer.split('.')[del_elements:]) + '.'
 
     def short_reverse_pointer(self, arg, network):
-        network = ip_network(arg)
+        network = ip_network(network)
+        addr = ip_address(arg)
         
         if network.version == 4:
             keep_elements = math.ceil((32-network.prefixlen)/8)
         else:
             keep_elements = math.ceil((128-network.prefixlen)/8)
 
-        return '.'.join(network.network_address.reverse_pointer.split('.')[:keep_elements])
+        return '.'.join(addr.reverse_pointer.split('.')[:keep_elements])
