@@ -1,0 +1,22 @@
+common_basic_firewall_rules_extra:
+  - comment: "dns over udp"
+    service_ports: [53]
+    service_type: udp
+    reachable_from:
+      - frontend
+      - backend
+      - db
+      - intra
+      - employee
+
+  - comment: "dns over tpc"
+    service_ports: [53]
+    service_type: tcp
+    reachable_from:
+      - frontend
+      - backend
+      - db
+      - intra
+      - employee
+
+common_motd_template: trixie

@@ -1,0 +1,65 @@
+- name: "Check configuration"
+  assert:
+    that:
+      - ipam.keys()|length > 0
+      - ipam_networks.keys()|length > 0
+      - internal_dns_zone_master_mname.endswith('.')
+      - internal_dns_zone_master_rname.endswith('.')
+      - internal_dns_ns_records|length > 0
+      - internal_dns_forwarders|length > 0
+
+- name: "Install bind9"
+  apt:
+    name: bind9
+    state: present
+
+- name: "Ensure /etc/bind/zones directory"
+  file:
+    path: "/etc/bind/zones"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: "Install named config"
+  template:
+    src: "named.conf.j2"
+    dest: "/etc/bind9/named.conf"
+    mode: 0644
+    owner: root
+    group: root
+  notify: "restart bind"
+
+- name: "Install zones"
+  template:
+    src: "db.j2"
+    dest: "/etc/bind/zones/db.{{ key }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop: "{{ ipam_networks|dict2items }}"
+  notify: "reload bind"
+
+- name: "Install ipv4 reverse zones"
+  template:
+    src: "db.in-addr.arpa.j2"
+    dest: "/etc/bind/zones/db.{{ key }}-reverse-ipv4"
+    mode: 0644
+    owner: root
+    group: root
+  loop: "{{ ipam_networks|dict2items }}"
+  notify: "reload bind"
+
+- name: "Install ipv6 reverse zones"
+  template:
+    src: "db.ip6.arpa.j2"
+    dest: "/etc/bind/zones/db.{{ key }}-reverse-ipv6"
+    mode: 0644
+    owner: root
+    group: root
+  loop: "{{ ipam_networks|dict2items }}"
+  notify: "reload bind"
+
+# This should be added to the end of every role, since ansible can't scope handlers for a role
+- name: "Flush handlers at the end of the role"
+  meta: flush_handlers

@@ -1,0 +1,11 @@
+ipam: {}
+ipam_networks: {}
+
+
+# list of ipv6 or ipv4 adresses
+internal_dns_forwarders: []
+
+internal_dns_zone_master_mname: ""
+internal_dns_zone_master_rname: ""
+internal_dns_ns_records: []
+internal_dns_default_ttl: 600

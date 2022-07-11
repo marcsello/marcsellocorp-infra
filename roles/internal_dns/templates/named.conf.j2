@@ -1,0 +1,50 @@
+acl "trusted" {
+	127.0.0.0/8;
+	::1/128;
+
+    {% for network in ipam_networks.values() %}
+    {{ network.ip.subnet }};
+    {{ network.ip6.subnet }};
+    {% endfor %}
+
+};
+
+options {
+	directory "/var/cache/bind";
+
+	forwarders {
+        {% for forwarder in internal_dns_forwarders %}
+        {{ forwarder }};
+        {% endfor %}
+	};
+
+	dnssec-validation no;
+        
+	allow-recursion { "trusted"; };
+	recursion yes;
+
+	auth-nxdomain no;    # conform to RFC1035
+	listen-on-v6 { any; };
+
+	allow-query { "trusted"; };
+};
+
+{% for network_name, network_data in ipam_networks.items() %}
+zone "{{ network.domain|cannonical_zone_name }}" in {
+	type master;
+	file "/etc/bind/zones/db.{{ network_name }}";
+	forwarders { };
+};
+
+zone "{{ network.ip.subnet|reverse_zone_name }}" in {
+	type master;
+	file "/etc/bind/zones/db.{{ network_name }}-reverse-ipv4";
+	forwarders { };
+};
+
+zone "{{ network.ip6.subnet|reverse_zone_name }}" in {
+	type master;
+	file "/etc/bind/zones/db.{{ network_name }}-reverse-ipv6";
+	forwarders { };
+};
+{% endfor %}

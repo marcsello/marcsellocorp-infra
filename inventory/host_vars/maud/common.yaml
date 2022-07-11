@@ -1,0 +1,2 @@
+# This is the CA server itself, not sure if it's okay to make it accept it's own certificate
+common_install_ca: false

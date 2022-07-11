@@ -1,0 +1,14 @@
+$TTL	{{ default_ttl }}
+@	IN	SOA	{{ internal_dns_zone_master_mname }} {{ internal_dns_zone_master_rname }} (
+{{ ansible_date_time.epoch|int }}		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+{% for record in internal_dns_ns_records %}
+@		IN	NS	{{ record|strip('.') }}.
+{% endfor %}
+{% for name, info in ipam.items() %}{% if info.network == key %}
+{{ info.service_addr.ip6|short_reverse_pointer(value) }}  IN  PTR  {{ name }}{{ value.domain }}.
+{% endif %}{% endfor %}

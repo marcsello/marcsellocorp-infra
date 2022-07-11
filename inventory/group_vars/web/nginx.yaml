@@ -6,6 +6,11 @@ nginx_upstreams: []
 #     - address: example.net
 #       options: ""
 
+nginx_upstreams:
+  - name: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}"
+    backends:
+      - address: "" # TODO
+
 nginx_vhosts: 
  - server_name: ["luna.sch.bme.hu", "luna"]
    cert_name: luna.sch.bme.hu
@@ -44,3 +49,8 @@ nginx_vhosts:
     - type: static
       location: "/"
       access_log: true
+
+ - server_name: [ "storage.marcsello.com" ]
+   cert_name: marcsello.com
+   locations:
+    - proxy

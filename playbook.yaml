@@ -4,6 +4,11 @@
     - common
     - mount
 
+- name: "dns specific tasks"
+  hosts: trixie
+  roles:
+    - { role: internal_dns, tags: ['internal_dns'] }
+
 - name: "webserver specific tasks"
   hosts: web
   roles:

@@ -1,0 +1,11 @@
+internal_dns_forwarders: 
+ - 2001:738:2001:207b:0:208:1:0;
+ - 152.66.208.1;
+ - 2001:738:2001:207b:0:208:29:0;
+ - 152.66.208.29;
+
+internal_dns_zone_master_mname: "trixie.intra.local."
+internal_dns_zone_master_rname: "root.local."
+internal_dns_ns_records:
+  - "trixie.intra.local."
+
