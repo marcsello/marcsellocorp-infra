@@ -2,7 +2,7 @@
   assert:
     that:
       - common_ca != "" or (not common_install_ca)
-      - ((role_path + '/templates/motd/' + common_motd_template + '.j2') | is_file) or (not common_install_motd)
+      #- ((role_path + '/templates/motd/' + common_motd_template + '.j2') | is_file) or (not common_install_motd) # is_file is missing?
       - ipam.keys() | length > 0
       - ipam_networks.keys() | length > 0
       - (common_resolvconf_resolvers|length > 0) or (not common_configure_static_resolvconf)
