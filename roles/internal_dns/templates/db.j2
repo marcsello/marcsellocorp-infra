@@ -9,7 +9,7 @@ $TTL	{{ default_ttl }}
 {% for record in internal_dns_ns_records %}
 @		IN	NS	{{ record|strip('.') }}.
 {% endfor %}
-{% for name, info in ipam.items() %}{% if info.network == key %}
+{% for name, info in ipam.items() %}{% if info.network == item.key %}
 {{ name }}  IN  A      {{ info.service_addr.ip }}
 {{ name }}  IN  AAAA   {{ info.service_addr.ip6 }}
 {% endif %}{% endfor %}

@@ -9,6 +9,6 @@ $TTL	{{ default_ttl }}
 {% for record in internal_dns_ns_records %}
 @		IN	NS	{{ record|strip('.') }}.
 {% endfor %}
-{% for name, info in ipam.items() %}{% if info.network == key %}
-{{ info.service_addr.ip6|short_reverse_pointer(value) }}  IN  PTR  {{ name }}{{ value.domain }}.
+{% for name, info in ipam.items() %}{% if info.network == item.key %}
+{{ info.service_addr.ip6|short_reverse_pointer(item.value) }}  IN  PTR  {{ name }}{{ value.domain }}.
 {% endif %}{% endfor %}

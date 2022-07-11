@@ -33,7 +33,7 @@
 - name: "Install zones"
   template:
     src: "db.j2"
-    dest: "/etc/bind/zones/db.{{ key }}"
+    dest: "/etc/bind/zones/db.{{ item.key }}"
     mode: 0644
     owner: root
     group: root
@@ -43,7 +43,7 @@
 - name: "Install ipv4 reverse zones"
   template:
     src: "db.in-addr.arpa.j2"
-    dest: "/etc/bind/zones/db.{{ key }}-reverse-ipv4"
+    dest: "/etc/bind/zones/db.{{ item.key }}-reverse-ipv4"
     mode: 0644
     owner: root
     group: root
@@ -53,7 +53,7 @@
 - name: "Install ipv6 reverse zones"
   template:
     src: "db.ip6.arpa.j2"
-    dest: "/etc/bind/zones/db.{{ key }}-reverse-ipv6"
+    dest: "/etc/bind/zones/db.{{ item.key }}-reverse-ipv6"
     mode: 0644
     owner: root
     group: root
