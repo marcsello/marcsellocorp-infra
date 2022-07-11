@@ -24,7 +24,7 @@
 - name: "Install named config"
   template:
     src: "named.conf.j2"
-    dest: "/etc/bind9/named.conf"
+    dest: "/etc/bind/named.conf"
     mode: 0644
     owner: root
     group: root
