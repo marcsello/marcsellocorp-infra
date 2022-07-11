@@ -20,3 +20,6 @@ common_basic_firewall_rules_extra:
       - employee
 
 common_motd_template: trixie
+
+# it might be a bad idea to let a dns server depend on itself
+common_configure_static_resolvconf: false

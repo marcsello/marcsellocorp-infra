@@ -8,7 +8,9 @@ class FilterModule(object):
 
     def filters(self):
         return {
-            'cannonical_zone_name': self.cannonical_zone_name
+            'cannonical_zone_name': self.cannonical_zone_name,
+            'reverse_zone_name': self.reverse_zone_name,
+            'short_reverse_pointer': self.short_reverse_pointer
         }
 
     def cannonical_zone_name(self, arg):

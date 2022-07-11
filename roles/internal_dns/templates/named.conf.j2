@@ -30,19 +30,19 @@ options {
 };
 
 {% for network_name, network_data in ipam_networks.items() %}
-zone "{{ network.domain|cannonical_zone_name }}" in {
+zone "{{ network_data.domain|cannonical_zone_name }}" in {
 	type master;
 	file "/etc/bind/zones/db.{{ network_name }}";
 	forwarders { };
 };
 
-zone "{{ network.ip.subnet|reverse_zone_name }}" in {
+zone "{{ network_data.ip.subnet|reverse_zone_name }}" in {
 	type master;
 	file "/etc/bind/zones/db.{{ network_name }}-reverse-ipv4";
 	forwarders { };
 };
 
-zone "{{ network.ip6.subnet|reverse_zone_name }}" in {
+zone "{{ network_data.ip6.subnet|reverse_zone_name }}" in {
 	type master;
 	file "/etc/bind/zones/db.{{ network_name }}-reverse-ipv6";
 	forwarders { };
