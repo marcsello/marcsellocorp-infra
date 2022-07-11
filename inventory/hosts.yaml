@@ -7,6 +7,13 @@ frontend:
   children:
     web:
 
+intra:
+  children:
+    trixie:
+    twilightsparkle:
+    stevenmagnet:
+    maud:
+
 web:
   hosts:
     aloe:
