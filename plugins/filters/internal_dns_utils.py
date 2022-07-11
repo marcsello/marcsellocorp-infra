@@ -28,8 +28,12 @@ class FilterModule(object):
         return '.'.join(network.network_address.reverse_pointer.split('.')[del_elements:]) + '.'
 
     def short_reverse_pointer(self, arg, network):
-        network = ip_network(network)
         addr = ip_address(arg)
+        verstr = {
+            4 : "ip",
+            6 : "ip6"
+        }[addr.version]
+        network = ip_network(network[verstr]['subnet'])
         
         if network.version == 4:
             keep_elements = math.ceil((32-network.prefixlen)/8)
