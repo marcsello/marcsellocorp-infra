@@ -8,7 +8,7 @@ frontend:
     web:
 
 intra:
-  children:
+  hosts:
     trixie:
     twilightsparkle:
     stevenmagnet:
