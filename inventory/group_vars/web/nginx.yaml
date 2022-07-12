@@ -2,9 +2,9 @@ nginx_manage_static_root_dirs: false
 nginx_https_proxy_protocol: true
 
 nginx_upstreams:
-  - name: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}"
+  - name: "stevenmagnet"
     backends:
-      - address: "stevenmagnet.intra.local:443"
+      - address: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}:443"
         options: ""
 
 nginx_vhosts: 
@@ -49,4 +49,12 @@ nginx_vhosts:
  - server_name: [ "storage.marcsello.com" ]
    cert_name: marcsello.com
    locations:
-    - proxy
+    - location: /
+      type: proxy
+      proxy_pass: "https://stevenmagnet"
+      proxy_pass_forwarded_ip: true
+      access_log: false
+      custom: |
+        proxy_ssl_verify on;
+        # Disable proxy buffering, because NextCloud should know the exact state of the file transfer
+        proxy_buffering off;
