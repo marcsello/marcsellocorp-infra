@@ -1,10 +1,12 @@
 nginx_manage_static_root_dirs: false
 nginx_https_proxy_protocol: true
 
+stevenmagnet_full_domain: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}"
+
 nginx_upstreams:
-  - name: "stevenmagnet"
+  - name: "{{ stevenmagnet_full_domain }}"
     backends:
-      - address: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}:443"
+      - address: "{{ stevenmagnet_full_domain }}:443"
         options: ""
 
 nginx_vhosts: 
@@ -51,7 +53,7 @@ nginx_vhosts:
    locations:
     - location: /
       type: proxy
-      proxy_pass: "https://stevenmagnet"
+      proxy_pass: "https://{{ stevenmagnet_full_domain }}"
       proxy_pass_forwarded_ip: true
       access_log: false
       custom: |
