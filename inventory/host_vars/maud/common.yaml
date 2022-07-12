@@ -1,2 +1,9 @@
 # This is the CA server itself, not sure if it's okay to make it accept it's own certificate
 common_install_ca: false
+
+common_basic_firewall_rules_extra:
+  - comment: "acme server"
+    service_ports: [443]
+
+  - comment: "cert sync server"
+    service_ports: [8443]
