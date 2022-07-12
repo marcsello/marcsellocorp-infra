@@ -55,6 +55,9 @@ nginx_vhosts:
       proxy_pass_forwarded_ip: true
       access_log: false
       custom: |
+        # this is what the common role installs... TOOD: make this less fragile
+        proxy_ssl_trusted_certificate /usr/local/share/ca-certificates/local.crt;
         proxy_ssl_verify on;
         # Disable proxy buffering, because NextCloud should know the exact state of the file transfer
         proxy_buffering off;
+
