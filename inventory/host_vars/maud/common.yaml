@@ -4,6 +4,18 @@ common_install_ca: false
 common_basic_firewall_rules_extra:
   - comment: "acme server"
     service_ports: [443]
+    reachable_from:
+      - frontend
+      - backend
+      - db
+      - intra
+      - employee
 
   - comment: "cert sync server"
     service_ports: [8443]
+    reachable_from:
+      - frontend
+      - backend
+      - db
+      - intra
+      - employee
