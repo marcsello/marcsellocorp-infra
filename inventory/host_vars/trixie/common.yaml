@@ -23,3 +23,6 @@ common_motd_template: trixie
 
 # it might be a bad idea to let a dns server depend on itself
 common_configure_static_resolvconf: false
+
+# External dns servers won't be able to resolve internal names, so we put them in the hosts file
+common_configure_hosts_file: true
