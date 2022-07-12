@@ -62,4 +62,13 @@ nginx_vhosts:
         proxy_ssl_verify on;
         # Disable proxy buffering, because NextCloud should know the exact state of the file transfer
         proxy_buffering off;
+   custom: |
+    proxy_connect_timeout 30;
+    proxy_send_timeout 43200; # 12 hours
+    proxy_read_timeout 43200; # 12 hours
+    send_timeout 43200; # 12 hours
+    client_max_body_size 1024g; # 1TB
+
+    # enable HSTS
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
