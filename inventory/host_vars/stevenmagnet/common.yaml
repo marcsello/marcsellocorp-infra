@@ -1,0 +1,7 @@
+common_basic_firewall_rules_extra:
+  - comment: "apache2 service"
+    service_ports: [443]
+    reachable_from:
+      - frontend
+
+common_motd_template: stevenmagnet
