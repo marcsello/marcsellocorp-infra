@@ -4,4 +4,9 @@ common_basic_firewall_rules_extra:
     reachable_from:
       - frontend
 
+  - comment: "acme challenge"
+    service_ports: [80]
+    reachable_from:
+      - intra
+
 common_motd_template: stevenmagnet
