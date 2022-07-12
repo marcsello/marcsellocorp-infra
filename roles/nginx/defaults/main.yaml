@@ -27,6 +27,7 @@ nginx_upstreams: []
 #   backends:
 #     - address: example.net
 #       options: ""
+#   extra_config: ""
 
 nginx_vhosts: []
 # - server_name: [example.net]

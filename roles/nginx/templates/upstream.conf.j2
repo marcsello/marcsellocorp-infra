@@ -1,5 +1,6 @@
 upstream {{ item.name }} {
     {% for backend in item.backends %}
-    server {{ backend.address }} {{ backend.options }};
+    server {{ backend.address }} {{ backend.options|default("") }};
     {% endfor %}
+    {{ item.extra_config|default("") }}
 }
