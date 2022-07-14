@@ -43,6 +43,7 @@
 - name: "Collect wrong mode domains"
   script:
     cmd: "{{ [role_path,'scripts/find_wrong_mode_domains.py']|path_join }} {{ certbot_mode }}"
+  changed_when: false
   register: wrong_mode_domains_output
 
 - name: "Compile lists"
