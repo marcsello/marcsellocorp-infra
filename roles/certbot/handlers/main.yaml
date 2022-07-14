@@ -1,0 +1,3 @@
+- name: "run cert copier"
+  shell:
+    cmd: "/etc/letsencrypt/renewal-hooks/deploy/cert-copier"

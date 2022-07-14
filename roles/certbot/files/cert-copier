@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+domains=$(find /etc/letsencrypt/live -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+
+for domain in ${domains}; do
+
+    cp -v "/etc/letsencrypt/live/${domain}/privkey.pem" "/etc/certs/${domain}.key"
+    cp -v "/etc/letsencrypt/live/${domain}/fullchain.pem" "/etc/certs/${domain}.crt"
+    
+    # TODO: make this less un-safe
+    chmod 644 "/etc/certs/${domain}.key"
+    chmod 644 "/etc/certs/${domain}.crt"
+
+done
+
+# run post update scripts
+run-parts --verbose /etc/certs/hooks

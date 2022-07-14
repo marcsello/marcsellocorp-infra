@@ -1,0 +1,75 @@
+- name: "Check config"
+  assert:
+    that:
+      - "certbot_mode in ['standalone', 'webroot']"
+      - "certbot_domains|length > 0"
+      - "certbot_webroot != '' or (certbot_intra_mode != 'standalone')"
+      - "certbot_email != ''"
+
+- name: "Install certbot"
+  apt:
+    name: certbot
+    state: present
+
+- name: "Make sure Marcsello Corp.(r) unified certificate folder(s) exists"
+  file:
+    path: "{{ item }}"
+    state: folder
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - "/etc/certs"
+    - "/etc/certs/hooks"
+
+- name: "Install Marcsello Corp.(r) unified certificate copier script"
+  copy:
+    src: "cert_copier.sh"
+    dest: "/etc/letsencrypt/renewal-hooks/deploy/cert-copier"
+    owner: root
+    group: root
+    mode: 0755
+  notify: "run cert copier"
+
+- name: "Get currently active cert list"
+  shell:
+    # certbot's certificates command seems harder to script properly
+    # also ansible.builtin.find looks pretty useless
+    cmd: "find /etc/letsencrypt/live -mindepth 1 -maxdepth 1 -type d -exec basename {} \\;"
+    warn: false
+  changed_when: false
+  register: cert_list_output
+
+- name: "Compile lists"
+  set_fact:
+    certbot_certs_to_delete: "{{ cert_list_output.stdout_lines|difference(certbot_domains) }}"
+    certbot_certs_to_obtain: "{{ certbot_domains|difference(cert_list_output.stdout_lines) }}"
+
+- name: "Delete uneeded certs"
+  shell:
+    cmd: "/usr/bin/certbot delete --cert-name {{ item }}"
+    warn: false
+  changed_when: true
+  loop: "{{ certbot_certs_to_delete }}"
+  notify: "run cert copier"
+
+- name: "Delte unneded certs from Marcsello Corp.(r) unified certificate folder"
+  file:
+    path: "/etc/certs/{{ item.0 }}{{ item.1 }}"
+    state: absent
+  loop: "{{ certbot_certs_to_delete|product(['.crt', '.key'])|list }}"
+  notify: "run cert copier"
+
+- name: "Acquire new certs"
+  shell:
+    cmd: "/usr/bin/certbot certonly {% if certbot_mode == 'standalone' %}--standalone {% endif %}{% if certbot_mode == 'webroot' %}--webroot -w \"{{ certbot_webroot }}\" {% endif %}--agree-tos --email \"{{ certbot_email }}\" -n -d {{ item }} {% if certbot_server_addr %}--server \"{{ certbot_server_addr }}\"{% endif %}"
+    warn: false
+  changed_when: true
+  register: "certbot_new_cert_result"
+  failed_when: "'Congratulations!' not in certbot_new_cert_result.stdout"
+  loop: "{{ certbot_certs_to_obtain }}"
+  notify: "run cert copier"
+
+# This should be added to the end of every role, since ansible can't scope handlers for a role
+- name: "Flush handlers at the end of the role"
+  meta: flush_handlers

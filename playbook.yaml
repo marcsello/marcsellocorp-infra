@@ -4,6 +4,13 @@
     - common
     - mount
 
+- name: "Cerbot"
+  hosts:
+    - stevenmagnet
+    - maud
+  roles:
+    - { role: certbot, tags: ['certbot'] }
+
 - name: "dns specific tasks"
   hosts: trixie
   roles:

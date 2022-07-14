@@ -1,0 +1,10 @@
+certbot_mode: "standalone"
+certbot_webroot: ""
+
+certbot_domains: []
+# - plain domain list
+
+certbot_email: ""
+
+# setting null will use letsencrypt server, acquiring publicly usable certs
+certbot_server_addr: null
