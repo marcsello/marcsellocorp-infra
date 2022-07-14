@@ -8,5 +8,10 @@ certbot_email: !vault |
     6233633132636534390a613562386632376631303731336563363664643430666662616462643037
     37366236383963636464303463383236326431393436636536643438306230346635
 
+# there is a locally installed nginx server there
+# TODO: Make it less manually installed and more ansible managed
+certbot_mode: "webroot"
+certbot_webroot: "/var/www/acme"
+
 certbot_domains:
   - "luna.sch.bme.hu"
