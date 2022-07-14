@@ -14,7 +14,7 @@
 - name: "Make sure Marcsello Corp.(r) unified certificate folder(s) exists"
   file:
     path: "{{ item }}"
-    state: folder
+    state: directory
     owner: root
     group: root
     mode: 0755
@@ -24,7 +24,7 @@
 
 - name: "Install Marcsello Corp.(r) unified certificate copier script"
   copy:
-    src: "cert_copier.sh"
+    src: "cert-copier"
     dest: "/etc/letsencrypt/renewal-hooks/deploy/cert-copier"
     owner: root
     group: root
