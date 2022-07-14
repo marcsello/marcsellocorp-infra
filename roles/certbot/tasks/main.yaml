@@ -40,10 +40,18 @@
   changed_when: false
   register: cert_list_output
 
+- name: "Collect wrong mode domains"
+  script:
+    cmd: "{{ [role_dir,'scripts/find_wrong_mode_domains.py']|path_join }} {{ certbot_mode }}"
+  register: wrong_mode_domains_output
+
 - name: "Compile lists"
   set_fact:
-    certbot_certs_to_delete: "{{ cert_list_output.stdout_lines|difference(certbot_domains) }}"
-    certbot_certs_to_obtain: "{{ certbot_domains|difference(cert_list_output.stdout_lines) }}"
+    # defined in list but not detected on the host -> to_obtain
+    # not defined in the list but detected on host -> to_delete
+    # detected on the host and in the list but have different modes (standalone vs webroot) -> both
+    certbot_certs_to_delete: "{{ (cert_list_output.stdout_lines|difference(certbot_domains)|union(certbot_domains|intersect(wrong_mode_domains_output.stdout_lines))|unique }}"
+    certbot_certs_to_obtain: "{{ (certbot_domains|difference(cert_list_output.stdout_lines)|union(certbot_domains|intersect(wrong_mode_domains_output.stdout_lines))|unique }}"
 
 - name: "Inspect cert tasks"
   debug:
