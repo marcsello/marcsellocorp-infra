@@ -1,5 +1,7 @@
 
 backend:
+  hosts:
+    violet:
   children:
     k8s:
 

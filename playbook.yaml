@@ -4,17 +4,19 @@
     - common
     - mount
 
-- name: "Cerbot"
-  hosts:
-    - stevenmagnet
-    - maud
-  roles:
-    - { role: certbot, tags: ['certbot'] }
-
 - name: "dns specific tasks"
   hosts: trixie
   roles:
     - { role: internal_dns, tags: ['internal_dns'] }
+
+# Certbot need working dns names so we run it after dns is complete 
+- name: "Hosts with certbot"
+  hosts:
+    - stevenmagnet
+    - maud
+    - violet
+  roles:
+    - { role: certbot, tags: ['certbot'] }
 
 - name: "webserver specific tasks"
   hosts: web

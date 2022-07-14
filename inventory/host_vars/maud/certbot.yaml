@@ -15,3 +15,7 @@ certbot_webroot: "/var/www/acme"
 
 certbot_domains:
   - "luna.sch.bme.hu"
+  - "asztal.sch.bme.hu"
+  - "fakertibutor.sch.bme.hu"
+  - "longsmartmotyi.tk"
+  - "vanefej.sch.bme.hu"
