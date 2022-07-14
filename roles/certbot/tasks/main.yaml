@@ -42,7 +42,7 @@
 
 - name: "Collect wrong mode domains"
   script:
-    cmd: "{{ [role_dir,'scripts/find_wrong_mode_domains.py']|path_join }} {{ certbot_mode }}"
+    cmd: "{{ [role_path,'scripts/find_wrong_mode_domains.py']|path_join }} {{ certbot_mode }}"
   register: wrong_mode_domains_output
 
 - name: "Compile lists"
