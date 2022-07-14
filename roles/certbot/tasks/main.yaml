@@ -45,6 +45,15 @@
     certbot_certs_to_delete: "{{ cert_list_output.stdout_lines|difference(certbot_domains) }}"
     certbot_certs_to_obtain: "{{ certbot_domains|difference(cert_list_output.stdout_lines) }}"
 
+- name: "Inspect cert tasks"
+  debug:
+    msg: |
+      Certs to delete:
+      {{ certbot_certs_to_delete|join('\n') }}
+
+      Certs to obtain:
+      {{ certbot_certs_to_obtain|join('\n') }}
+
 - name: "Delete uneeded certs"
   shell:
     cmd: "/usr/bin/certbot delete --cert-name {{ item }}"
