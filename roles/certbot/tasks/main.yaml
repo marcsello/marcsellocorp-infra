@@ -3,7 +3,7 @@
     that:
       - "certbot_mode in ['standalone', 'webroot']"
       - "certbot_domains|length > 0"
-      - "certbot_webroot != '' or (certbot_mode != 'standalone')"
+      - "certbot_webroot != '' or (certbot_mode != 'webroot')"
       - "certbot_email != ''"
 
 - name: "Install certbot"
