@@ -21,6 +21,7 @@ nginx_ssl_keys_dir: "/etc/certs"
 
 nginx_proxy_protocol_accept_overrides: [] # hostnames from ipam
 
+nginx_integrate_unified_cert: false
 
 nginx_upstreams: []
 # - name:

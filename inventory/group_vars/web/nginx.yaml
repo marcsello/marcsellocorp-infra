@@ -1,5 +1,6 @@
 nginx_manage_static_root_dirs: false
 nginx_https_proxy_protocol: true
+nginx_integrate_unified_cert: true
 
 stevenmagnet_full_domain: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}"
 
