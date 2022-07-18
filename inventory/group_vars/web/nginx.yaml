@@ -29,7 +29,7 @@ nginx_vhosts:
         allow 2001:738:2001:2070::/60;
         deny all;
       error_pages:
-        "403": "angery.html"
+        "403": "/angery.html"
 
  - server_name: ["luna.marcsello.com"]
    cert_name: marcsello.com
@@ -43,7 +43,28 @@ nginx_vhosts:
 #      access_log: true
 
  - server_name: ["fakertibutor.sch.bme.hu", "fakertibutor"]
-   cert_name: luna.sch.bme.hu
+   cert_name: fakertibutor.sch.bme.hu
+   locations:
+    - type: static
+      location: "/"
+      access_log: true
+
+ - server_name: ["asztal.sch.bme.hu", "asztal"]
+   cert_name: asztal.sch.bme.hu
+   locations:
+    - type: static
+      location: "/"
+      access_log: true
+  
+ - server_name: ["vanefej.sch.bme.hu", "vanefej"]
+   cert_name: vanefej.sch.bme.hu
+   locations:
+    - type: static
+      location: "/"
+      access_log: true
+
+ - server_name: ["longsmartmotyi.tk"]
+   cert_name: longsmartmotyi.tk
    locations:
     - type: static
       location: "/"
