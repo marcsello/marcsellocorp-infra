@@ -7,6 +7,6 @@ BUNDLE_PASSPHRASE="{{ remotecert_bundle_passphrase }}"
 CERT_SOURCE_URL="{{ remotecert_cert_source_url }}"
 
 # TODO: Don't put passphrase to argv because it's readable by other proceeses
-curl --fail -s --user "${HTTP_USER}" "${CERT_SOURCE}" | gpg --batch --decrypt --passphrase "${BUNDLE_PASSPHRASE}" | tar xvz -C /etc/certs --exclude="hooks"
+curl --fail -s --user "${HTTP_USER}" "${CERT_SOURCE_URL}" | gpg --batch --decrypt --passphrase "${BUNDLE_PASSPHRASE}" | tar xvz -C /etc/certs --exclude="hooks"
 
 run-parts --verbose /etc/certs/hooks
