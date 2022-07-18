@@ -12,6 +12,8 @@ server {
     ssl_certificate_key {{ [nginx_ssl_certs_dir, item.cert_name|default(item.server_name[0]) + '.key']|path_join }};
     {% endif %}
 
+    port_in_redirect off;
+
     root {{ [nginx_static_root, item.server_name[0]]|path_join }};
 
     server_name {{ item.server_name|join(' ') }};
