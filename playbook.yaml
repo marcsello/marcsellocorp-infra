@@ -21,6 +21,7 @@
 - name: "webserver specific tasks"
   hosts: web
   roles:
+    - { role: remotecert, tags: ['remotecert'] }
     - { role: nginx, tags: ['nginx'] }
     - { role: haproxy, tags: ['haproxy'] }
     - { role: keepalived, tags: ['keepalived'] }
