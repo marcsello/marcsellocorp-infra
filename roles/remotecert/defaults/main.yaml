@@ -1,0 +1,11 @@
+remotecert_http_user: ""
+remotecert_http_password: ""
+remotecert_bundle_passphrase: ""
+remotecert_cert_source_url: ""
+
+remotecert_schedule:
+  minute: "15"
+  hour: "*/6"
+  day: "*"
+  month: "*"
+  weekday: "*"

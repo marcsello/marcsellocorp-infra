@@ -1,0 +1,44 @@
+- name: "Check config"
+  assert:
+    that:
+      - "':' not in remotecert_http_user"
+      - "':' not in remotecert_http_password"
+      - "remotecert_bundle_passphrase != ''"
+      - "remotecert_cert_source_url != ''"
+      
+- name: "Install required packages"
+  apt:
+    name: "gnupg2"
+    state: present
+
+- name: "Make sure Marcsello Corp.(r) unified certificate folder(s) exists"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - "/etc/certs"
+    - "/etc/certs/hooks"
+
+- name: "Install remote sync script"
+  template:
+    src: "certsync.sh.j2"
+    dest: "/opt/certsync.sh"
+    mode: 0700
+    owner: root
+    group: root
+  no_log: true
+
+- name: "Schedule updater script"
+  cron:
+    name: certsync
+    job: "/opt/certsync.sh"
+    cron_file: remotecert
+    user: root
+    weekday: "{{ remotecert_schedule.weekday }}"
+    day: "{{ remotecert_schedule.day }}"
+    month: "{{ remotecert_schedule.month }}"
+    minute: "{{ remotecert_schedule.minute }}"
+    hour: "{{ remotecert_schedule.hour }}"
