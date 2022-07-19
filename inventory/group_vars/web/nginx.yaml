@@ -3,11 +3,17 @@ nginx_https_proxy_protocol: true
 nginx_integrate_unified_cert: true
 
 stevenmagnet_full_domain: "stevenmagnet{{ ipam_networks[ipam.stevenmagnet.network]['domain'] }}"
+violet_full_domain: "violet{{ ipam_networks[ipam.violet.network]['domain'] }}"
 
 nginx_upstreams:
   - name: "{{ stevenmagnet_full_domain }}"
     backends:
       - address: "{{ stevenmagnet_full_domain }}:443"
+        options: ""
+
+  - name: "{{ violet_full_domain }}"
+    backends:
+      - address: "{{ violet_full_domain }}:5443"
         options: ""
 
 nginx_vhosts: 
@@ -94,3 +100,24 @@ nginx_vhosts:
     # enable HSTS
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
+ - server_name: ["caffe.marcsello.com"]
+   cert_name: marcsello.com
+   locations:
+    - type: static
+      location: "/"
+      access_log: false
+    - location: "~ /openvidu$"
+      type: proxy
+      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass_forwarded_ip: true
+      access_log: true
+    - location: "/info"
+      type: proxy
+      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass_forwarded_ip: true
+      access_log: true
+    - location: "/accept-certificate"
+      type: proxy
+      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass_forwarded_ip: true
+      access_log: true
