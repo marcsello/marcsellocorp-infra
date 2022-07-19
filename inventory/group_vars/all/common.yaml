@@ -5,3 +5,5 @@ common_resolvconf_resolvers:
   - trixie
 
 common_resolvconf_search_domain: "{{ ipam[inventory_hostname_short]['network'] }}"
+
+common_clock_sync_ntp_host: trixie

@@ -26,3 +26,6 @@ common_configure_static_resolvconf: false
 
 # External dns servers won't be able to resolve internal names, so we put them in the hosts file
 common_configure_hosts_file: true
+
+# we are the NTP server, we don't need to sync to ourself
+common_clock_sync_ntp: false

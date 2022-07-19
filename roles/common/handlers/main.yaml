@@ -11,3 +11,8 @@
   systemd:
     name: nftables
     state: restarted
+
+- name: "Restart chrony"
+  systemd:
+    name: chrony
+    state: restarted

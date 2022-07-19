@@ -39,6 +39,10 @@
   import_tasks: basic_firewall.yaml
   when: common_setup_basic_firewall
 
+- name: "Configure clock sync"
+  import_tasks: clock_sync.yaml
+  when: common_configure_clock_sync
+
 # This should be added to the end of every role, since ansible can't scope handlers for a role
 - name: "Flush handlers at the end of the role"
   meta: flush_handlers

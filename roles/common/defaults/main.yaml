@@ -6,6 +6,7 @@ common_configure_static_resolvconf: true
 common_configure_hosts_file: true
 common_setup_basic_firewall: true
 common_configure_sshd: true
+common_configure_clock_sync: true
 
 # This should be overridden
 ipam_networks: {}
@@ -57,3 +58,9 @@ common_basic_firewall_rules_extra: []
 
 common_basic_firewall_accept_vrrp_from_host: []
 # hostnames as declared in ipam
+
+common_clock_sync_kvm_ptp: true
+common_clock_sync_ntp: true
+
+# hostname as declared in ipam
+common_clock_sync_ntp_host: ""

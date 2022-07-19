@@ -1,0 +1,59 @@
+- name: "install chrony"
+  apt:
+    name: chrony
+    state: present
+
+- name: "Set ptp_kvm to be autoloaded"
+  copy:
+    content: "ptp_kvm"
+    dest: "/etc/modules-load.d/ptp_kvm.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: common_clock_sync_kvm_ptp
+
+- name: "Disable ptp_kvm autoload"
+  file:
+    path: "/etc/modules-load.d/ptp_kvm.conf"
+    state: absent
+  when: not common_clock_sync_kvm_ptp
+
+- name: "Load ptp_kvm module"
+  modprobe:
+    name: "ptp_kvm"
+    state: "{{ common_clock_sync_kvm_ptp|ternary('present', 'absent') }}"
+  notify: "Restart chrony"
+
+- name: "Add /dev/ptp0 to chrony as time source"
+  copy:
+    content: "refclock PHC /dev/ptp0 poll 2"
+    dest: "/etc/chrony/conf.d/ptp.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: common_clock_sync_kvm_ptp
+  notify: "Restart chrony"
+
+- name: "Remove /dev/ptp0 from chrony as time source"
+  file:
+    path: "/etc/chrony/conf.d/ptp.conf"
+    state: absent
+  when: not common_clock_sync_kvm_ptp
+  notify: "Restart chrony"
+
+- name: "Add NTP server to chrony as time source"
+  template:
+    src: "clock_sync/local-ntp-server.sources.j2"
+    dest: "/etc/chrony/sources.d/local-ntp-server.sources"
+    owner: root
+    group: root
+    mode: 0644
+  when: common_clock_sync_ntp
+  notify: "Restart chrony"
+
+- name: "Remove NTP server from chrony as time source"
+  file:
+    path: "/etc/chrony/sources.d/local-ntp-server.sources"
+    state: absent
+  when: not common_clock_sync_ntp
+  notify: "Restart chrony"
