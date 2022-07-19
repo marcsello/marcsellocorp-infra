@@ -1,0 +1,11 @@
+common_basic_firewall_rules_extra:
+  - comment: "openvidu api"
+    service_ports: [5443]
+    reachable_from:
+      - frontend
+      - backend
+
+  - comment: "acme challenge"
+    service_ports: [80]
+    reachable_from:
+      - intra
