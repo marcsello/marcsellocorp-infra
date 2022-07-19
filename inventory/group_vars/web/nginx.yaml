@@ -108,17 +108,17 @@ nginx_vhosts:
       access_log: false
     - location: "~ /openvidu$"
       type: proxy
-      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass: "http://{{ violet_full_domain }}"
       proxy_pass_forwarded_ip: true
       access_log: true
     - location: "/info"
       type: proxy
-      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass: "http://{{ violet_full_domain }}"
       proxy_pass_forwarded_ip: true
       access_log: true
     - location: "/accept-certificate"
       type: proxy
-      proxy_pass: "https://{{ violet_full_domain }}"
+      proxy_pass: "http://{{ violet_full_domain }}"
       proxy_pass_forwarded_ip: true
       access_log: true
    custom: |
