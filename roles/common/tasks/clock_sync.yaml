@@ -1,4 +1,4 @@
-- name: "install chrony"
+- name: "Ensure chrony is installed"
   apt:
     name: chrony
     state: present
