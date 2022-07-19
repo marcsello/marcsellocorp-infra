@@ -15,3 +15,5 @@
     mode: 0775
   when: item|need_static_dir
   loop: "{{ nginx_vhosts }}"
+  loop_control:
+   label: "{{ [nginx_static_root, item.server_name[0]]|path_join }}" 
