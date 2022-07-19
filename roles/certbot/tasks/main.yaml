@@ -13,17 +13,19 @@
 
 - name: "Make sure Marcsello Corp.(r) unified certificate folder(s) and certbot's required folders exists"
   file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "{{ item.mode }}"
   loop:
-    - "/etc/certs"
-    - "/etc/certs/hooks"
-    - "/etc/letsencrypt/live"
-    - "/etc/letsencrypt/renewal-hooks"
-    - "/etc/letsencrypt/renewal-hooks/deploy"
+    - { mode: 0755, path: "/etc/certs"}
+    - { mode: 0755, path: "/etc/certs/hooks"}
+    - { mode: 0700, path: "/etc/letsencrypt/live"}
+    - { mode: 0755, path: "/etc/letsencrypt/renewal-hooks"}
+    - { mode: 0755, path: "/etc/letsencrypt/renewal-hooks/deploy"}
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: "Install Marcsello Corp.(r) unified certificate copier script"
   copy:
