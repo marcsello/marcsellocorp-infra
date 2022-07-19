@@ -21,6 +21,7 @@
   loop:
     - "/etc/certs"
     - "/etc/certs/hooks"
+    - "/etc/letsencrypt/live"
     - "/etc/letsencrypt/renewal-hooks"
     - "/etc/letsencrypt/renewal-hooks/deploy"
 
