@@ -19,11 +19,11 @@
     group: root
     mode: "{{ item.mode }}"
   loop:
-    - { mode: 0755, path: "/etc/certs"}
-    - { mode: 0755, path: "/etc/certs/hooks"}
-    - { mode: 0700, path: "/etc/letsencrypt/live"}
-    - { mode: 0755, path: "/etc/letsencrypt/renewal-hooks"}
-    - { mode: 0755, path: "/etc/letsencrypt/renewal-hooks/deploy"}
+    - { mode: '755', path: "/etc/certs"}
+    - { mode: '755', path: "/etc/certs/hooks"}
+    - { mode: '700', path: "/etc/letsencrypt/live"}
+    - { mode: '755', path: "/etc/letsencrypt/renewal-hooks"}
+    - { mode: '755', path: "/etc/letsencrypt/renewal-hooks/deploy"}
   loop_control:
     label: "{{ item.path }}"
 
