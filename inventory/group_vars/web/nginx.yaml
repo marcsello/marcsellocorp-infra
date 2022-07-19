@@ -121,3 +121,6 @@ nginx_vhosts:
       proxy_pass: "https://{{ violet_full_domain }}"
       proxy_pass_forwarded_ip: true
       access_log: true
+   custom: |
+    proxy_ssl_trusted_certificate /usr/local/share/ca-certificates/local.crt;
+    proxy_ssl_verify on;
