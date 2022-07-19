@@ -11,7 +11,7 @@
     name: certbot
     state: present
 
-- name: "Make sure Marcsello Corp.(r) unified certificate folder(s) exists"
+- name: "Make sure Marcsello Corp.(r) unified certificate folder(s) and certbot's required folders exists"
   file:
     path: "{{ item }}"
     state: directory
@@ -21,6 +21,8 @@
   loop:
     - "/etc/certs"
     - "/etc/certs/hooks"
+    - "/etc/letsencrypt/renewal-hooks"
+    - "/etc/letsencrypt/renewal-hooks/deploy"
 
 - name: "Install Marcsello Corp.(r) unified certificate copier script"
   copy:
@@ -56,12 +58,7 @@
 
 - name: "Inspect cert tasks"
   debug:
-    msg: |
-      Certs to delete:
-      {{ certbot_certs_to_delete|join('\n') }}
-
-      Certs to obtain:
-      {{ certbot_certs_to_obtain|join('\n') }}
+    msg: "Certs to delete: {{ certbot_certs_to_delete|join(', ') }}      Certs to obtain: {{ certbot_certs_to_obtain|join(', ') }}"
 
 - name: "Delete uneeded certs"
   shell:
@@ -71,7 +68,7 @@
   loop: "{{ certbot_certs_to_delete }}"
   notify: "run cert copier"
 
-- name: "Delte unneded certs from Marcsello Corp.(r) unified certificate folder"
+- name: "Delete unneded certs from Marcsello Corp.(r) unified certificate folder"
   file:
     path: "/etc/certs/{{ item.0 }}{{ item.1 }}"
     state: absent
@@ -80,14 +77,4 @@
 
 - name: "Acquire new certs"
   shell:
-    cmd: "/usr/bin/certbot certonly {% if certbot_mode == 'standalone' %}--standalone {% endif %}{% if certbot_mode == 'webroot' %}--webroot -w \"{{ certbot_webroot }}\" {% endif %}--agree-tos --email \"{{ certbot_email }}\" -n -d {{ item }} {% if certbot_server_addr %}--server \"{{ certbot_server_addr }}\"{% endif %}"
-    warn: false
-  changed_when: true
-  register: "certbot_new_cert_result"
-  failed_when: "'Congratulations!' not in certbot_new_cert_result.stdout"
-  loop: "{{ certbot_certs_to_obtain }}"
-  notify: "run cert copier"
-
-# This should be added to the end of every role, since ansible can't scope handlers for a role
-- name: "Flush handlers at the end of the role"
-  meta: flush_handlers
+    cmd: "/usr/bin/certbot certonly {% if certbot_mode == 'standalone' %}--standalone {% endif %}{% if certbot_mode == 'webroot' %}--webroot -w \"{{ certbot_webroot }}\" {% endif %}--agree-tos --email \"{{ certbot_email }}\" -n -d {{ item }} {% if certbot_server_addr %}----server
