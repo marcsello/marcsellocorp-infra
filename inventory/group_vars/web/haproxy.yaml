@@ -29,16 +29,16 @@ haproxy_backends:
    config: |
     mode tcp
     option tcp-check
-    server soarin {{ ipam.soarin.service_addr.ip }}:32014 check send-proxy-v2
-    server spitfire {{ ipam.spitfire.service_addr.ip }}:32014 check send-proxy-v2
-    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:32014 check send-proxy-v2
+    server soarin {{ ipam.soarin.service_addr.ip }}:30837 check send-proxy-v2
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:30837 check send-proxy-v2
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:30837 check send-proxy-v2
 
  - name: "k8s_acme"
    config: |
     mode http
-    server soarin {{ ipam.soarin.service_addr.ip }}:31080 check
-    server spitfire {{ ipam.spitfire.service_addr.ip }}:31080 check
-    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:31080 check
+    server soarin {{ ipam.soarin.service_addr.ip }}:30836 check
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:30836 check
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:30836 check
 
  - name: "acme"
    config: |
