@@ -3,6 +3,9 @@ haproxy_frontends:
     config: | 
       bind :::443 v4v6
       mode tcp
+      tcp-request inspect-delay 5s
+      tcp-request content accept if { req_ssl_hello_type 1 }
+      use_backend k8s_https if { ssl_fc_sni -i -m end k8s.marcsello.com }
       default_backend nginx
 
   - name: "service_http"
@@ -10,6 +13,7 @@ haproxy_frontends:
       bind :::80 v4v6
       mode http
       http-request redirect scheme https unless { path -i -m beg /.well-known/acme-challenge }
+      use_backend k8s_acme if { hdr(host) -i -m end k8s.marcsello.com }
       default_backend acme
 
 
@@ -20,6 +24,21 @@ haproxy_backends:
     option tcp-check
     server local 127.0.0.1:8443 check send-proxy-v2
     server other {{ ipam[haproxy_custom_pair]['service_addr']['ip'] }}:8443 check send-proxy-v2
+
+ - name: "k8s_https"
+   config: |
+    mode tcp
+    option tcp-check
+    server soarin {{ ipam.soarin.service_addr.ip }}:443 check send-proxy-v2
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:443 check send-proxy-v2
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:443 check send-proxy-v2
+
+ - name: "k8s_acme"
+   config: |
+    mode http
+    server soarin {{ ipam.soarin.service_addr.ip }}:80 check
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:80 check
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:80 check
 
  - name: "acme"
    config: |
