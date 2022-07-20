@@ -5,7 +5,7 @@ haproxy_frontends:
       mode tcp
       tcp-request inspect-delay 5s
       tcp-request content accept if { req_ssl_hello_type 1 }
-      use_backend k8s_https if { ssl_fc_sni -i -m end k8s.marcsello.com }
+      use_backend k8s_https if { req_ssl_sni -i -m end k8s.marcsello.com }
       default_backend nginx
 
   - name: "service_http"
