@@ -43,12 +43,14 @@
     cmd: "find /etc/letsencrypt/live -mindepth 1 -maxdepth 1 -type d -exec basename {} \\;"
     warn: false
   changed_when: false
+  check_mode: no # means never run AS check mode -> run normal always -> will run in check mode
   register: cert_list_output
 
 - name: "Collect wrong mode domains"
   script:
     cmd: "{{ [role_path,'scripts/find_wrong_mode_domains.py']|path_join }} {{ certbot_mode }}"
   changed_when: false
+  check_mode: no # means never run AS check mode -> run normal always -> will run in check mode
   register: wrong_mode_domains_output
 
 - name: "Compile lists"
