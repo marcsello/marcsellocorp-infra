@@ -13,3 +13,6 @@ $TTL	{{ internal_dns_default_ttl }}
 {{ name }}  IN  A      {{ info.service_addr.ip }}
 {{ name }}  IN  AAAA   {{ info.service_addr.ip6 }}
 {% endif %}{% endfor %}
+{% for entry in internal_dns_extra_records[item.key]|default([]) %}
+{{ entry.name }}  IN  {{ entry.type }}	{{ entry.value }}
+{% endfor %}

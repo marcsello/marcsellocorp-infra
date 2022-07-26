@@ -9,3 +9,23 @@ internal_dns_zone_master_rname: "root.local."
 internal_dns_ns_records:
   - "trixie.intra.local."
 
+internal_dns_extra_records: 
+  backend:
+    - name: "*.k8s"
+      type: 'A'
+      value: "{{ ipam.soarin.service_addr.ip }}"
+    - name: "*.k8s"
+      type: 'AAAA'
+      value: "{{ ipam.soarin.service_addr.ip6 }}"
+    - name: "*.k8s"
+      type: 'A'
+      value: "{{ ipam.fleetfoot.service_addr.ip }}"
+    - name: "*.k8s"
+      type: 'AAAA'
+      value: "{{ ipam.fleetfoot.service_addr.ip6 }}"
+    - name: "*.k8s"
+      type: 'A'
+      value: "{{ ipam.spitfire.service_addr.ip }}"
+    - name: "*.k8s"
+      type: 'AAAA'
+      value: "{{ ipam.spitfire.service_addr.ip6 }}"

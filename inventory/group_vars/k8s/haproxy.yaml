@@ -1,0 +1,34 @@
+haproxy_frontends: 
+  - name: "service_https"
+    config: | 
+      bind :::443 v4v6
+      mode tcp
+      tcp-request inspect-delay 5s
+      tcp-request content accept if { req_ssl_hello_type 1 }
+      tcp-request content reject unless { req_ssl_sni -i -m end k8s.backend.local }
+      default_backend k8s_https
+
+  - name: "service_http"
+    config: |
+      bind :::80 v4v6
+      mode http
+      http-request redirect scheme https unless { path -i -m beg /.well-known/acme-challenge }
+      default_backend k8s_acme
+
+# localhost does not respond to ingress, so we have to use each server's own public address
+
+haproxy_backends: 
+ - name: "k8s_https"
+   config: |
+    mode tcp
+    option tcp-check
+    server soarin {{ ipam.soarin.service_addr.ip }}:30837 check send-proxy-v2
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:30837 check send-proxy-v2
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:30837 check send-proxy-v2
+
+ - name: "k8s_acme"
+   config: |
+    mode http
+    server soarin {{ ipam.soarin.service_addr.ip }}:30836 check send-proxy-v2
+    server spitfire {{ ipam.spitfire.service_addr.ip }}:30836 check send-proxy-v2
+    server fleetfoot {{ ipam.fleetfoot.service_addr.ip }}:30836 check send-proxy-v2
