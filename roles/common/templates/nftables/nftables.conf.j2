@@ -22,7 +22,7 @@ table inet filter {
 		ct state {established, related} accept
 
 		iif lo accept
-		iif != lo ip daddr 127.0.0.1/8 drop
+		iif != lo ip daddr 127.0.0.0/8 drop
 		iif != lo ip6 daddr ::1/128 drop 
 
 		ip protocol icmp icmp type echo-request limit rate 2/second accept
